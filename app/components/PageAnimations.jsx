@@ -166,6 +166,27 @@ export default function PageAnimations() {
       );
     }
 
+    // ---------- AI SOLUTIONS: dark-bento card stagger ----------
+    const aiCards = gsap.utils.toArray(".gsap-ai-card");
+    if (aiCards.length) {
+      gsap.fromTo(
+        aiCards,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: "#ai-solutions",
+            start: "top 75%",
+            once: true,
+          },
+        }
+      );
+    }
+
     // ---------- SOLUTIONS: row stagger + number slide-in ----------
     const rows = gsap.utils.toArray(".gsap-solution-row");
     if (rows.length) {

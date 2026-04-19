@@ -265,12 +265,81 @@ export default function Page() {
             <SolutionRow num="04" title="Cloud Desktop" body="Securely store data and access your desktop and applications from any device. A cost-effective, secure and reliable way to work from anywhere in the world." />
             <SolutionRow num="05" title="Network Solutions" body="Comprehensive network solutions for businesses of all sizes. Certified professionals design, manage, and implement secure, reliable networks tailored to your needs." />
             <SolutionRow num="06" title="Support Consulting" body="Expert advice and guidance to help businesses maximize their IT investments. Tailored solutions to ensure your business takes full advantage of the latest technology." />
-            <SolutionRow num="07" title="AI Strategy & Roadmap" body="Executive workshops and feasibility audits that identify high-ROI AI use cases, assess data readiness, and produce a 90/180/365-day delivery roadmap — so investment goes to initiatives that move the business, not experiments that stall." />
-            <SolutionRow num="08" title="LLM Integrations & Copilots" body="Production copilots built on Claude, GPT, and Gemini — context-aware assistants that sit inside your CRM, support desk, or internal tools. Prompt engineering, tool-use, streaming UX, and cost/latency tuning included." />
-            <SolutionRow num="09" title="RAG & Knowledge Systems" body="Retrieval-augmented generation over your documents, tickets, wikis, and databases. Vector stores, semantic chunking, hybrid search, and citation-grounded answers — so your AI speaks from your sources, not its training data." />
-            <SolutionRow num="10" title="AI Agents & Workflow Automation" body="Multi-step agents that plan, call tools, and execute workflows: lead qualification, ticket triage, document processing, research, outbound. Human-in-the-loop guardrails by default." />
-            <SolutionRow num="11" title="Custom ML & Fine-Tuning" body="Domain-specific model development — classifiers, forecasters, recommenders, and fine-tuned open-weight LLMs when generic APIs aren't enough. Training pipelines, evaluation suites, and continuous retraining baked in." />
-            <SolutionRow num="12" title="MLOps, Evaluation & Safety" body="The unsexy foundation that makes AI trustworthy in production: automated evals, prompt/version control, observability, red-teaming, PII and prompt-injection defences, and cost guardrails. Ship fast, sleep at night." />
+          </div>
+        </div>
+      </section>
+
+      {/* ===================== AI SOLUTIONS ===================== */}
+      <section id="ai-solutions" className="border-b-4 border-swiss-fg bg-swiss-fg text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="py-12 md:py-16 border-b-2 border-gray-800">
+            <div className="grid lg:grid-cols-12 gap-8 items-end">
+              <div className="lg:col-span-7">
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="text-swiss-accent font-black text-xs uppercase tracking-widest">03.</span>
+                  <span className="font-bold text-xs uppercase tracking-widest text-gray-400">Intelligence</span>
+                </div>
+                <h2 className="gsap-section-h2 text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
+                  AI<br /><span className="text-swiss-accent">Solutions</span>
+                </h2>
+              </div>
+              <div className="lg:col-span-5">
+                <p className="text-base font-normal leading-relaxed text-gray-400">
+                  From strategy through production. We help you pick the right bet, ship a working system, and keep it reliable as usage grows.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            <AiCard
+              num="01"
+              category="Strategy"
+              title="AI Strategy & Roadmap"
+              body="Executive workshops and feasibility audits that identify high-ROI use cases, assess data readiness, and produce a 90/180/365-day delivery roadmap — investment goes to initiatives that move the business, not experiments that stall."
+              tags={["Workshops", "Audit", "90/180/365"]}
+              border="border-b-2 md:border-r-2 border-gray-800"
+            />
+            <AiCard
+              num="02"
+              category="Integration"
+              title="LLM Integrations & Copilots"
+              body="Production copilots built on Claude, GPT, and Gemini — context-aware assistants embedded in your CRM, support desk, or internal tools. Prompting, tool-use, streaming UX, and cost/latency tuning included."
+              tags={["Claude", "GPT", "Prompting"]}
+              border="border-b-2 border-gray-800"
+            />
+            <AiCard
+              num="03"
+              category="Retrieval"
+              title="RAG & Knowledge Systems"
+              body="Retrieval-augmented generation over your documents, tickets, wikis, and databases. Vector stores, semantic chunking, hybrid search, and citation-grounded answers — your AI speaks from your sources, not its training data."
+              tags={["Vectors", "Hybrid Search", "Citations"]}
+              border="border-b-2 md:border-r-2 border-gray-800"
+            />
+            <AiCard
+              num="04"
+              category="Automation"
+              title="AI Agents & Workflow Automation"
+              body="Multi-step agents that plan, call tools, and execute workflows: lead qualification, ticket triage, document processing, research, outbound. Human-in-the-loop guardrails by default."
+              tags={["Agents", "Tool-use", "Guardrails"]}
+              border="border-b-2 border-gray-800"
+            />
+            <AiCard
+              num="05"
+              category="Modeling"
+              title="Custom ML & Fine-Tuning"
+              body="Domain-specific model development — classifiers, forecasters, recommenders, and fine-tuned open-weight LLMs when generic APIs aren't enough. Training pipelines, evaluation suites, and continuous retraining baked in."
+              tags={["PyTorch", "Fine-Tune", "Pipelines"]}
+              border="border-b-2 md:border-r-2 md:border-b-0 border-gray-800"
+            />
+            <AiCard
+              num="06"
+              category="Operations"
+              title="MLOps, Evaluation & Safety"
+              body="The unsexy foundation that makes AI trustworthy in production: automated evals, prompt/version control, observability, red-teaming, PII and prompt-injection defences, and cost guardrails. Ship fast, sleep at night."
+              tags={["Evals", "Observability", "Security"]}
+              border=""
+            />
           </div>
         </div>
       </section>
@@ -280,7 +349,7 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-12 md:py-16 border-b-2 border-swiss-fg">
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-swiss-accent font-black text-xs uppercase tracking-widest">03.</span>
+              <span className="text-swiss-accent font-black text-xs uppercase tracking-widest">04.</span>
               <span className="font-bold text-xs uppercase tracking-widest">Advantages</span>
             </div>
             <h2 className="gsap-section-h2 text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
@@ -338,7 +407,7 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-12 md:py-16 border-b-2 border-swiss-fg">
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-swiss-accent font-black text-xs uppercase tracking-widest">04.</span>
+              <span className="text-swiss-accent font-black text-xs uppercase tracking-widest">05.</span>
               <span className="font-bold text-xs uppercase tracking-widest">Connect</span>
             </div>
             <h2 className="gsap-section-h2 text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
@@ -408,6 +477,7 @@ export default function Page() {
                 <li><a href="#hero" className="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Home</a></li>
                 <li><a href="#services" className="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Services</a></li>
                 <li><a href="#solutions" className="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Solutions</a></li>
+                <li><a href="#ai-solutions" className="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">AI</a></li>
                 <li><a href="#why-us" className="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Why Us</a></li>
                 <li><a href="#contact" className="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Contact</a></li>
               </ul>
@@ -459,6 +529,35 @@ function WhyCard({ num, title, body, borderExtra }) {
           <h3 className="card-heading font-black text-xl uppercase tracking-tight mb-3">{title}</h3>
           <p className="card-text text-sm font-normal leading-relaxed text-gray-600">{body}</p>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function AiCard({ num, category, title, body, tags, border }) {
+  return (
+    <div className={`gsap-ai-card group relative p-8 md:p-12 cursor-default transition-colors duration-200 hover:bg-swiss-accent ${border}`}>
+      <div className="flex items-start justify-between mb-8">
+        <span className="font-black text-6xl md:text-7xl tracking-tighter text-swiss-accent group-hover:text-white transition-colors duration-200 leading-none">{num}</span>
+        <span className="text-[10px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-black/70 border border-gray-800 group-hover:border-black/30 px-2 py-1 transition-colors duration-200">
+          {category}
+        </span>
+      </div>
+      <h3 className="font-black text-2xl md:text-3xl uppercase tracking-tight mb-4 max-w-sm text-white group-hover:text-black transition-colors duration-200">
+        {title}
+      </h3>
+      <p className="text-sm font-normal leading-relaxed text-gray-400 group-hover:text-black/80 mb-6 max-w-md transition-colors duration-200">
+        {body}
+      </p>
+      <div className="flex flex-wrap gap-2">
+        {tags.map((t) => (
+          <span
+            key={t}
+            className="text-[10px] font-bold uppercase tracking-widest text-gray-500 group-hover:text-black/70 border border-gray-800 group-hover:border-black/20 px-2 py-1 transition-colors duration-200"
+          >
+            {t}
+          </span>
+        ))}
       </div>
     </div>
   );
