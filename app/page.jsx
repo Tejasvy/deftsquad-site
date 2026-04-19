@@ -37,9 +37,9 @@ export default function Page() {
               </div>
 
               <h1 className="gsap-hero-h1 text-4xl sm:text-6xl md:text-7xl lg:text-7xl xl:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8">
-                <span className="text-swiss-accent">IT</span><br />
-                Consulting<br />
-                & <span className="text-swiss-accent">AI</span> Solutions
+                <span className="text-swiss-accent">AI</span> Solutions<br />
+                & <span className="text-swiss-accent">IT</span><br />
+                Consulting
               </h1>
 
               <p className="text-base md:text-lg font-normal leading-relaxed max-w-xl mb-10 text-gray-700">
