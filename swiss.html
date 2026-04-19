@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEFTSQUAD — IT Consulting & Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            swiss: {
+              bg: '#FFFFFF',
+              fg: '#000000',
+              muted: '#F2F2F2',
+              accent: '#FF3000',
+              border: '#000000',
+            },
+          },
+          fontFamily: {
+            sans: ['Inter', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: #FFFFFF;
+      color: #000000;
+      font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    /* ===== TEXTURE PATTERNS ===== */
+
+    /* Noise texture - global paper feel */
+    .swiss-noise {
+      position: relative;
+    }
+    .swiss-noise::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.015;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grid pattern - 24px structural grid */
+    .swiss-grid-pattern {
+      background-image:
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* Dot matrix - print-like dots */
+    .swiss-dots {
+      background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+
+    /* Diagonal lines */
+    .swiss-diagonal {
+      background-image: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 4px,
+        rgba(0,0,0,0.02) 4px,
+        rgba(0,0,0,0.02) 5px
+      );
+    }
+
+    /* ===== NAV LINK SLIDE ANIMATION ===== */
+    .nav-slide {
+      position: relative;
+      overflow: hidden;
+      display: inline-flex;
+      flex-direction: column;
+      height: 1.2em;
+    }
+    .nav-slide span {
+      transition: transform 200ms ease-out;
+    }
+    .nav-slide:hover span:first-child {
+      transform: translateY(-100%);
+    }
+    .nav-slide:hover span:last-child {
+      transform: translateY(-100%);
+    }
+
+    /* ===== ROTATING PLUS ICON ===== */
+    .plus-rotate {
+      transition: transform 200ms ease-out;
+    }
+    .group:hover .plus-rotate {
+      transform: rotate(90deg);
+    }
+
+    /* ===== COLOR INVERSION CARD ===== */
+    .invert-card {
+      transition: background-color 200ms ease-out, color 200ms ease-out;
+    }
+    .invert-card:hover {
+      background-color: #FF3000;
+      color: #FFFFFF;
+    }
+    .invert-card:hover .card-heading,
+    .invert-card:hover .card-text,
+    .invert-card:hover .card-label,
+    .invert-card:hover .card-icon {
+      color: #FFFFFF;
+    }
+    .invert-card:hover .card-border-item {
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    /* Black inversion variant */
+    .invert-card-black:hover {
+      background-color: #000000;
+      color: #FFFFFF;
+    }
+    .invert-card-black:hover .card-heading,
+    .invert-card-black:hover .card-text,
+    .invert-card-black:hover .card-label,
+    .invert-card-black:hover .card-icon {
+      color: #FFFFFF;
+    }
+
+    /* ===== STAT SCALE ===== */
+    .stat-number {
+      transition: transform 200ms ease-out;
+    }
+    .group:hover .stat-number {
+      transform: scale(1.05);
+    }
+
+    /* ===== FOCUS VISIBLE ===== */
+    *:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px #FF3000, 0 0 0 4px #FFFFFF;
+    }
+
+    /* ===== SECTION SCROLL ===== */
+    section { scroll-margin-top: 80px; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body class="swiss-noise min-h-screen antialiased">
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white border-b-4 border-swiss-fg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 md:h-20">
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-swiss-accent"></div>
+          <span class="font-black text-base md:text-lg uppercase tracking-tight">DeftSquad</span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="#hero" class="nav-slide text-xs font-bold uppercase tracking-widest">
+            <span>Home</span>
+            <span class="text-swiss-accent">Home</span>
+          </a>
+          <a href="#services" class="nav-slide text-xs font-bold uppercase tracking-widest">
+            <span>Services</span>
+            <span class="text-swiss-accent">Services</span>
+          </a>
+          <a href="#solutions" class="nav-slide text-xs font-bold uppercase tracking-widest">
+            <span>Solutions</span>
+            <span class="text-swiss-accent">Solutions</span>
+          </a>
+          <a href="#why-us" class="nav-slide text-xs font-bold uppercase tracking-widest">
+            <span>Why Us</span>
+            <span class="text-swiss-accent">Why Us</span>
+          </a>
+          <a href="#contact" class="nav-slide text-xs font-bold uppercase tracking-widest">
+            <span>Contact</span>
+            <span class="text-swiss-accent">Contact</span>
+          </a>
+        </div>
+
+        <!-- CTA -->
+        <a href="#contact" class="hidden md:inline-flex items-center bg-swiss-fg text-white font-bold text-xs uppercase tracking-widest px-6 py-3 hover:bg-swiss-accent transition-colors duration-200">
+          Get Started
+        </a>
+
+        <!-- Mobile menu button -->
+        <button id="menu-toggle" class="lg:hidden w-12 h-12 flex items-center justify-center border-2 border-swiss-fg" aria-label="Toggle menu">
+          <svg id="menu-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <svg id="close-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden border-t-2 border-swiss-fg bg-white">
+      <div class="max-w-7xl mx-auto px-4 py-6 space-y-0">
+        <a href="#hero" class="block text-sm font-bold uppercase tracking-widest py-4 border-b border-gray-200 hover:text-swiss-accent transition-colors duration-150">Home</a>
+        <a href="#services" class="block text-sm font-bold uppercase tracking-widest py-4 border-b border-gray-200 hover:text-swiss-accent transition-colors duration-150">Services</a>
+        <a href="#solutions" class="block text-sm font-bold uppercase tracking-widest py-4 border-b border-gray-200 hover:text-swiss-accent transition-colors duration-150">Solutions</a>
+        <a href="#why-us" class="block text-sm font-bold uppercase tracking-widest py-4 border-b border-gray-200 hover:text-swiss-accent transition-colors duration-150">Why Us</a>
+        <a href="#contact" class="block text-sm font-bold uppercase tracking-widest py-4 border-b border-gray-200 hover:text-swiss-accent transition-colors duration-150">Contact</a>
+        <a href="#contact" class="block bg-swiss-fg text-white text-sm font-bold uppercase tracking-widest py-4 text-center mt-4 hover:bg-swiss-accent transition-colors duration-200">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ===================== HERO ===================== -->
+  <section id="hero" class="pt-20 md:pt-24 border-b-4 border-swiss-fg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-0 min-h-[80vh] lg:min-h-[85vh]">
+
+        <!-- Left: Text (8 cols) -->
+        <div class="lg:col-span-8 flex flex-col justify-center py-16 lg:py-24 lg:pr-16 lg:border-r-4 lg:border-swiss-fg">
+          <!-- Section label -->
+          <div class="flex items-center gap-3 mb-8">
+            <span class="text-swiss-accent font-black text-xs uppercase tracking-widest">00.</span>
+            <span class="font-bold text-xs uppercase tracking-widest">System Overview</span>
+            <div class="flex-1 h-[2px] bg-black"></div>
+          </div>
+
+          <h1 class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-tighter leading-[0.85] mb-8">
+            IT<br>
+            Consult<span class="text-swiss-accent">ing</span><br>
+            & Services
+          </h1>
+
+          <p class="text-base md:text-lg font-normal leading-relaxed max-w-xl mb-10 text-gray-700">
+            We offer professional guidance and actionable solutions to businesses experiencing issues and provide skilled professionals who can help to create a software application and maintain it for your organization.
+          </p>
+
+          <div class="flex flex-wrap gap-4">
+            <a href="#services" class="inline-flex items-center bg-swiss-fg text-white font-bold text-xs uppercase tracking-widest px-8 h-14 hover:bg-swiss-accent transition-colors duration-200">
+              Explore Services
+              <svg class="w-4 h-4 ml-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+            <a href="#contact" class="inline-flex items-center border-2 border-swiss-fg text-swiss-fg font-bold text-xs uppercase tracking-widest px-8 h-14 hover:bg-swiss-fg hover:text-white transition-colors duration-200">
+              Contact Us
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Geometric composition (4 cols) -->
+        <div class="hidden lg:flex lg:col-span-4 items-center justify-center p-12 swiss-grid-pattern relative">
+          <!-- Bauhaus-inspired composition -->
+          <div class="relative w-full aspect-square max-w-[320px]">
+            <!-- Large circle -->
+            <div class="absolute top-0 right-0 w-48 h-48 rounded-full border-4 border-swiss-fg"></div>
+            <!-- Red filled square -->
+            <div class="absolute bottom-8 left-0 w-32 h-32 bg-swiss-accent"></div>
+            <!-- Small black circle -->
+            <div class="absolute top-1/2 left-1/3 w-16 h-16 bg-swiss-fg rounded-full"></div>
+            <!-- Horizontal line -->
+            <div class="absolute top-[60%] left-0 right-0 h-[3px] bg-swiss-fg"></div>
+            <!-- Vertical line -->
+            <div class="absolute top-0 bottom-0 left-[40%] w-[3px] bg-swiss-fg"></div>
+            <!-- Small outlined square -->
+            <div class="absolute bottom-0 right-8 w-20 h-20 border-2 border-swiss-fg swiss-dots"></div>
+            <!-- GCP text -->
+            <div class="absolute bottom-2 right-0 text-[10px] font-bold uppercase tracking-widest text-gray-500">Google Cloud Partner</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== STATS ===================== -->
+  <section class="border-b-4 border-swiss-fg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 lg:grid-cols-4">
+
+        <div class="group border-r-2 border-b-2 lg:border-b-0 border-swiss-fg p-6 md:p-8 lg:p-12 hover:bg-swiss-fg transition-colors duration-200 cursor-default">
+          <span class="stat-number block font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter group-hover:text-white transition-colors duration-200">6+</span>
+          <span class="block text-xs font-bold uppercase tracking-widest mt-2 text-gray-500 group-hover:text-gray-400 transition-colors duration-200">Core Services</span>
+          <div class="plus-rotate mt-4 w-6 h-6 flex items-center justify-center">
+            <svg class="w-4 h-4 group-hover:text-swiss-accent transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          </div>
+        </div>
+
+        <div class="group border-b-2 lg:border-b-0 lg:border-r-2 border-swiss-fg p-6 md:p-8 lg:p-12 hover:bg-swiss-fg transition-colors duration-200 cursor-default">
+          <span class="stat-number block font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter group-hover:text-white transition-colors duration-200">99.9<span class="text-swiss-accent">%</span></span>
+          <span class="block text-xs font-bold uppercase tracking-widest mt-2 text-gray-500 group-hover:text-gray-400 transition-colors duration-200">Uptime SLA</span>
+          <div class="plus-rotate mt-4 w-6 h-6 flex items-center justify-center">
+            <svg class="w-4 h-4 group-hover:text-swiss-accent transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          </div>
+        </div>
+
+        <div class="group border-r-2 border-swiss-fg p-6 md:p-8 lg:p-12 hover:bg-swiss-fg transition-colors duration-200 cursor-default">
+          <span class="stat-number block font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter group-hover:text-white transition-colors duration-200">24/7</span>
+          <span class="block text-xs font-bold uppercase tracking-widest mt-2 text-gray-500 group-hover:text-gray-400 transition-colors duration-200">Support</span>
+          <div class="plus-rotate mt-4 w-6 h-6 flex items-center justify-center">
+            <svg class="w-4 h-4 group-hover:text-swiss-accent transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          </div>
+        </div>
+
+        <div class="group p-6 md:p-8 lg:p-12 hover:bg-swiss-fg transition-colors duration-200 cursor-default">
+          <span class="stat-number block font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter group-hover:text-white transition-colors duration-200">GCP</span>
+          <span class="block text-xs font-bold uppercase tracking-widest mt-2 text-gray-500 group-hover:text-gray-400 transition-colors duration-200">Cloud Partner</span>
+          <div class="plus-rotate mt-4 w-6 h-6 flex items-center justify-center">
+            <svg class="w-4 h-4 group-hover:text-swiss-accent transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== SERVICES ===================== -->
+  <section id="services" class="border-b-4 border-swiss-fg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
+      <div class="py-12 md:py-16 border-b-2 border-swiss-fg">
+        <div class="grid lg:grid-cols-12 gap-8 items-end">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-swiss-accent font-black text-xs uppercase tracking-widest">01.</span>
+              <span class="font-bold text-xs uppercase tracking-widest">System</span>
+            </div>
+            <h2 class="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
+              Our<br>Serv<span class="text-swiss-accent">ices</span>
+            </h2>
+          </div>
+          <div class="lg:col-span-5">
+            <p class="text-base font-normal leading-relaxed text-gray-700">
+              Cutting-edge development and cloud-native solutions engineered for your business.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+
+        <!-- Cloud Native Development -->
+        <div class="group invert-card border-b-2 md:border-r-2 border-swiss-fg p-8 md:p-12 cursor-default">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-10 h-10 border-2 border-swiss-fg flex items-center justify-center card-border-item">
+              <svg class="w-5 h-5 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+            </div>
+            <svg class="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-200 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+          <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Cloud Native Development</h3>
+          <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Applications designed to reside in the cloud involve cloud technologies like Microservices, CI/CD, Infrastructure as Code and DevSecOps.</p>
+        </div>
+
+        <!-- Cloud Migration -->
+        <div class="group invert-card border-b-2 lg:border-r-2 border-swiss-fg p-8 md:p-12 cursor-default">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-10 h-10 border-2 border-swiss-fg flex items-center justify-center card-border-item">
+              <svg class="w-5 h-5 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+            </div>
+            <svg class="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-200 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+          <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Cloud Migration</h3>
+          <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Access, plan and execute cloud migration between on-premises-to-cloud and cloud-to-cloud services.</p>
+        </div>
+
+        <!-- Cloud Optimization -->
+        <div class="group invert-card border-b-2 md:border-r-2 lg:border-r-0 border-swiss-fg p-8 md:p-12 cursor-default">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-10 h-10 border-2 border-swiss-fg flex items-center justify-center card-border-item">
+              <svg class="w-5 h-5 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <svg class="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-200 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+          <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Cloud Optimization</h3>
+          <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Analyzing the right resource as per your application needs to eliminate resource wastage.</p>
+        </div>
+
+        <!-- Microservices -->
+        <div class="group invert-card border-b-2 md:border-b-0 lg:border-b-0 md:border-r-0 lg:border-r-2 border-swiss-fg p-8 md:p-12 cursor-default md:border-r-2">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-10 h-10 border-2 border-swiss-fg flex items-center justify-center card-border-item">
+              <svg class="w-5 h-5 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+            </div>
+            <svg class="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-200 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+          <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Microservices</h3>
+          <p class="card-text text-sm font-normal leading-relaxed text-gray-600">A set of fine-grained services communicate with each other over well-defined APIs.</p>
+        </div>
+
+        <!-- Micro Frontend -->
+        <div class="group invert-card border-b-2 md:border-b-0 lg:border-r-2 border-swiss-fg p-8 md:p-12 cursor-default">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-10 h-10 border-2 border-swiss-fg flex items-center justify-center card-border-item">
+              <svg class="w-5 h-5 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <svg class="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-200 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+          <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Micro Frontend</h3>
+          <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Decomposing front-end application into small individual micro applications works loosely together.</p>
+        </div>
+
+        <!-- Mobile Development -->
+        <div class="group invert-card p-8 md:p-12 cursor-default">
+          <div class="flex items-center justify-between mb-6">
+            <div class="w-10 h-10 border-2 border-swiss-fg flex items-center justify-center card-border-item">
+              <svg class="w-5 h-5 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            </div>
+            <svg class="w-5 h-5 -rotate-45 group-hover:rotate-0 transition-transform duration-200 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </div>
+          <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Mobile Development</h3>
+          <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Design and develop a software application in both Apple and Android to fulfill your business needs.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== IT SOLUTIONS ===================== -->
+  <section id="solutions" class="border-b-4 border-swiss-fg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
+      <div class="py-12 md:py-16 border-b-2 border-swiss-fg">
+        <div class="grid lg:grid-cols-12 gap-8 items-end">
+          <div class="lg:col-span-5 lg:order-2">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="text-swiss-accent font-black text-xs uppercase tracking-widest">02.</span>
+              <span class="font-bold text-xs uppercase tracking-widest">Method</span>
+            </div>
+            <h2 class="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
+              IT Solu<span class="text-swiss-accent">tions</span>
+            </h2>
+          </div>
+          <div class="lg:col-span-7 lg:order-1">
+            <p class="text-base font-normal leading-relaxed text-gray-700">
+              Enterprise-grade infrastructure and managed services tailored for your needs.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Solutions list -->
+      <div class="divide-y-2 divide-swiss-fg">
+
+        <!-- Cloud Solutions -->
+        <div class="group invert-card-black grid lg:grid-cols-12 gap-6 py-8 md:py-12 px-4 md:px-8 cursor-default transition-all duration-200">
+          <div class="lg:col-span-1">
+            <span class="card-label text-swiss-accent font-black text-sm">01</span>
+          </div>
+          <div class="lg:col-span-3">
+            <h3 class="card-heading font-black text-lg uppercase tracking-tight">Cloud Solutions</h3>
+          </div>
+          <div class="lg:col-span-8">
+            <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Our Cloud Solutions provide businesses with the ability to store, access, and manage their data securely in the cloud. Scalable, cost-effective, and secure.</p>
+          </div>
+        </div>
+
+        <!-- Managed IT Services -->
+        <div class="group invert-card-black grid lg:grid-cols-12 gap-6 py-8 md:py-12 px-4 md:px-8 cursor-default transition-all duration-200">
+          <div class="lg:col-span-1">
+            <span class="card-label text-swiss-accent font-black text-sm">02</span>
+          </div>
+          <div class="lg:col-span-3">
+            <h3 class="card-heading font-black text-lg uppercase tracking-tight">Managed IT Services</h3>
+          </div>
+          <div class="lg:col-span-8">
+            <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Reliable IT support with proactive monitoring and maintenance of networks and systems. We ensure your systems remain secure, up-to-date, and running optimally.</p>
+          </div>
+        </div>
+
+        <!-- Disaster Recovery -->
+        <div class="group invert-card-black grid lg:grid-cols-12 gap-6 py-8 md:py-12 px-4 md:px-8 cursor-default transition-all duration-200">
+          <div class="lg:col-span-1">
+            <span class="card-label text-swiss-accent font-black text-sm">03</span>
+          </div>
+          <div class="lg:col-span-3">
+            <h3 class="card-heading font-black text-lg uppercase tracking-tight">Disaster Recovery</h3>
+          </div>
+          <div class="lg:col-span-8">
+            <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Comprehensive protection utilizing the latest technology to ensure your data and systems are safe. Tailored plans for peace of mind in the face of disaster.</p>
+          </div>
+        </div>
+
+        <!-- Cloud Desktop -->
+        <div class="group invert-card-black grid lg:grid-cols-12 gap-6 py-8 md:py-12 px-4 md:px-8 cursor-default transition-all duration-200">
+          <div class="lg:col-span-1">
+            <span class="card-label text-swiss-accent font-black text-sm">04</span>
+          </div>
+          <div class="lg:col-span-3">
+            <h3 class="card-heading font-black text-lg uppercase tracking-tight">Cloud Desktop</h3>
+          </div>
+          <div class="lg:col-span-8">
+            <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Securely store data and access your desktop and applications from any device. A cost-effective, secure and reliable way to work from anywhere in the world.</p>
+          </div>
+        </div>
+
+        <!-- Network Solutions -->
+        <div class="group invert-card-black grid lg:grid-cols-12 gap-6 py-8 md:py-12 px-4 md:px-8 cursor-default transition-all duration-200">
+          <div class="lg:col-span-1">
+            <span class="card-label text-swiss-accent font-black text-sm">05</span>
+          </div>
+          <div class="lg:col-span-3">
+            <h3 class="card-heading font-black text-lg uppercase tracking-tight">Network Solutions</h3>
+          </div>
+          <div class="lg:col-span-8">
+            <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Comprehensive network solutions for businesses of all sizes. Certified professionals design, manage, and implement secure, reliable networks tailored to your needs.</p>
+          </div>
+        </div>
+
+        <!-- Support Consulting -->
+        <div class="group invert-card-black grid lg:grid-cols-12 gap-6 py-8 md:py-12 px-4 md:px-8 cursor-default transition-all duration-200">
+          <div class="lg:col-span-1">
+            <span class="card-label text-swiss-accent font-black text-sm">06</span>
+          </div>
+          <div class="lg:col-span-3">
+            <h3 class="card-heading font-black text-lg uppercase tracking-tight">Support Consulting</h3>
+          </div>
+          <div class="lg:col-span-8">
+            <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Expert advice and guidance to help businesses maximize their IT investments. Tailored solutions to ensure your business takes full advantage of the latest technology.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== WHY CHOOSE US ===================== -->
+  <section id="why-us" class="border-b-4 border-swiss-fg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
+      <div class="py-12 md:py-16 border-b-2 border-swiss-fg">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-swiss-accent font-black text-xs uppercase tracking-widest">03.</span>
+          <span class="font-bold text-xs uppercase tracking-widest">Advantages</span>
+        </div>
+        <h2 class="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
+          Why<br>Deft<span class="text-swiss-accent">Squad?</span>
+        </h2>
+      </div>
+
+      <!-- Why items -->
+      <div class="grid grid-cols-1 lg:grid-cols-2">
+
+        <!-- 01. Customer First -->
+        <div class="group invert-card border-b-2 lg:border-r-2 border-swiss-fg p-8 md:p-12 cursor-default">
+          <div class="flex items-start gap-6">
+            <span class="font-black text-5xl md:text-6xl tracking-tighter text-swiss-muted group-hover:text-white/20 transition-colors duration-200 shrink-0 leading-none">01</span>
+            <div>
+              <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Customer First</h3>
+              <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Customers come first is a fundamental value of our organisation. We endeavour to comprehend our clients' needs and provide solutions that meet or exceed them.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02. Security -->
+        <div class="group invert-card border-b-2 border-swiss-fg p-8 md:p-12 cursor-default">
+          <div class="flex items-start gap-6">
+            <span class="font-black text-5xl md:text-6xl tracking-tighter text-swiss-muted group-hover:text-white/20 transition-colors duration-200 shrink-0 leading-none">02</span>
+            <div>
+              <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Security</h3>
+              <p class="card-text text-sm font-normal leading-relaxed text-gray-600">Security is among our top priorities. We adhere to the software industry's best practices and standards to ensure code is secure, dependable, and maintainable.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03. Solution with Passion -->
+        <div class="group invert-card border-b-2 lg:border-r-2 border-swiss-fg p-8 md:p-12 cursor-default">
+          <div class="flex items-start gap-6">
+            <span class="font-black text-5xl md:text-6xl tracking-tighter text-swiss-muted group-hover:text-white/20 transition-colors duration-200 shrink-0 leading-none">03</span>
+            <div>
+              <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Solution with Passion</h3>
+              <p class="card-text text-sm font-normal leading-relaxed text-gray-600">We are devoted to delivering high-quality IT solutions with enthusiasm and diligence. Our team can manage any project with efficiency and imagination.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04. Timely Delivery -->
+        <div class="group invert-card border-b-2 lg:border-b-0 border-swiss-fg p-8 md:p-12 cursor-default">
+          <div class="flex items-start gap-6">
+            <span class="font-black text-5xl md:text-6xl tracking-tighter text-swiss-muted group-hover:text-white/20 transition-colors duration-200 shrink-0 leading-none">04</span>
+            <div>
+              <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Timely Delivery within Budget</h3>
+              <p class="card-text text-sm font-normal leading-relaxed text-gray-600">We have a proven methodology that ensures every stage of the project is planned, executed and monitored with precision and efficiency.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 05. Scalable Solutions - full width -->
+        <div class="group invert-card lg:col-span-2 p-8 md:p-12 bg-swiss-muted swiss-dots cursor-default">
+          <div class="flex items-start gap-6">
+            <span class="font-black text-5xl md:text-6xl tracking-tighter text-gray-300 group-hover:text-white/20 transition-colors duration-200 shrink-0 leading-none">05</span>
+            <div>
+              <h3 class="card-heading font-black text-xl uppercase tracking-tight mb-3">Scalable Solutions</h3>
+              <p class="card-text text-sm font-normal leading-relaxed text-gray-600 max-w-2xl">We provide cloud consulting, migration, development, management, and security services. We have expertise in Azure, AWS, Google Cloud Platform, and IBM Cloud. We can help you design, build, deploy, and manage your cloud applications and infrastructure.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== PARTNER ===================== -->
+  <section class="border-b-4 border-swiss-fg bg-swiss-fg text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <div class="grid lg:grid-cols-12 gap-8 items-center">
+        <div class="lg:col-span-4">
+          <span class="text-xs font-bold uppercase tracking-widest text-gray-500">Trusted Partnership</span>
+        </div>
+        <div class="lg:col-span-4 text-center">
+          <div class="inline-flex items-center gap-4">
+            <div class="w-12 h-12 border-2 border-white flex items-center justify-center">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+            </div>
+            <div class="text-left">
+              <p class="font-black text-lg uppercase tracking-tight">Google Cloud</p>
+              <p class="text-xs font-bold uppercase tracking-widest text-swiss-accent">Certified Partner</p>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-4 lg:text-right">
+          <div class="w-16 h-16 bg-swiss-accent inline-block"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact" class="border-b-4 border-swiss-fg">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
+      <div class="py-12 md:py-16 border-b-2 border-swiss-fg">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-swiss-accent font-black text-xs uppercase tracking-widest">04.</span>
+          <span class="font-bold text-xs uppercase tracking-widest">Connect</span>
+        </div>
+        <h2 class="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9]">
+          Get In<br>Tou<span class="text-swiss-accent">ch</span>
+        </h2>
+      </div>
+
+      <div class="grid lg:grid-cols-12">
+        <!-- Left: Contact Info (5 cols) -->
+        <div class="lg:col-span-5 lg:border-r-2 border-swiss-fg py-12 md:py-16 lg:pr-12">
+          <p class="text-base font-normal leading-relaxed text-gray-700 mb-10">
+            Ready to upgrade your technology infrastructure? Get in touch with our team of experts.
+          </p>
+
+          <div class="space-y-0 border-t-2 border-swiss-fg">
+            <div class="py-6 border-b-2 border-swiss-fg">
+              <span class="text-xs font-bold uppercase tracking-widest text-gray-500 block mb-1">Address</span>
+              <span class="font-bold text-sm">5005 W Royal Ln Suite 183k, Irving, TX 75063</span>
+            </div>
+            <div class="py-6 border-b-2 border-swiss-fg">
+              <span class="text-xs font-bold uppercase tracking-widest text-gray-500 block mb-1">Phone</span>
+              <span class="font-bold text-sm">+1 469.599.4789</span>
+            </div>
+            <div class="py-6 border-b-2 border-swiss-fg">
+              <span class="text-xs font-bold uppercase tracking-widest text-gray-500 block mb-1">Email</span>
+              <span class="font-bold text-sm">info@deftsquad.com</span>
+            </div>
+          </div>
+
+          <!-- Geometric decoration -->
+          <div class="mt-10 flex gap-4 items-end">
+            <div class="w-8 h-8 bg-swiss-accent"></div>
+            <div class="w-8 h-16 border-2 border-swiss-fg"></div>
+            <div class="w-8 h-8 rounded-full border-2 border-swiss-fg"></div>
+            <div class="w-16 h-[3px] bg-swiss-fg self-center"></div>
+          </div>
+        </div>
+
+        <!-- Right: Form (7 cols) -->
+        <div class="lg:col-span-7 py-12 md:py-16 lg:pl-12">
+          <form class="space-y-8" onsubmit="event.preventDefault();">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-widest mb-3">First Name *</label>
+                <input type="text" required placeholder="John" class="w-full bg-transparent border-b-2 border-swiss-fg font-medium text-sm py-3 placeholder-gray-400 focus:border-swiss-accent focus:outline-none transition-colors duration-200">
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-widest mb-3">Last Name *</label>
+                <input type="text" required placeholder="Doe" class="w-full bg-transparent border-b-2 border-swiss-fg font-medium text-sm py-3 placeholder-gray-400 focus:border-swiss-accent focus:outline-none transition-colors duration-200">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-widest mb-3">Email *</label>
+              <input type="email" required placeholder="john@company.com" class="w-full bg-transparent border-b-2 border-swiss-fg font-medium text-sm py-3 placeholder-gray-400 focus:border-swiss-accent focus:outline-none transition-colors duration-200">
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-widest mb-3">Message</label>
+              <textarea rows="4" placeholder="Tell us about your project..." class="w-full bg-transparent border-2 border-swiss-fg font-medium text-sm p-4 placeholder-gray-400 focus:border-swiss-accent focus:outline-none transition-colors duration-200 resize-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full sm:w-auto bg-swiss-fg text-white font-bold text-xs uppercase tracking-widest px-12 h-14 hover:bg-swiss-accent transition-colors duration-200">
+              Send Message
+              <svg class="w-4 h-4 ml-3 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="bg-swiss-fg text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-b border-gray-800">
+
+        <!-- Logo & tagline -->
+        <div class="lg:col-span-2 py-12 md:py-16 lg:pr-16 lg:border-r border-gray-800">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-8 h-8 bg-swiss-accent"></div>
+            <span class="font-black text-lg uppercase tracking-tight">DeftSquad</span>
+          </div>
+          <p class="text-sm font-normal leading-relaxed text-gray-400 max-w-sm">
+            Professional IT consulting and services. Building secure, scalable, and innovative solutions for businesses worldwide.
+          </p>
+          <div class="mt-6 inline-flex items-center gap-2">
+            <div class="w-2 h-2 bg-swiss-accent"></div>
+            <span class="text-xs font-bold uppercase tracking-widest text-gray-500">Google Cloud Partner</span>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="py-12 md:py-16 lg:px-12 lg:border-r border-gray-800">
+          <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-6">Navigation</h4>
+          <ul class="space-y-4">
+            <li><a href="#hero" class="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Home</a></li>
+            <li><a href="#services" class="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Services</a></li>
+            <li><a href="#solutions" class="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Solutions</a></li>
+            <li><a href="#why-us" class="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Why Us</a></li>
+            <li><a href="#contact" class="text-sm font-medium text-gray-400 hover:text-swiss-accent transition-colors duration-150">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div class="py-12 md:py-16 lg:pl-12">
+          <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-6">Contact</h4>
+          <div class="space-y-4 text-sm">
+            <p class="text-gray-400">5005 W Royal Ln Suite 183k</p>
+            <p class="text-gray-400">Irving, TX 75063</p>
+            <p class="text-white font-bold">+1 469.599.4789</p>
+            <p class="text-white font-bold">info@deftsquad.com</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom -->
+      <div class="py-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <span class="text-xs text-gray-600">&copy; 2024 DeftSquad. All rights reserved.</span>
+        <span class="text-xs text-gray-600 uppercase tracking-widest">International Typographic Style</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+      });
+    });
+  </script>
+
+</body>
+</html>

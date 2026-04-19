@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DEFTSQUAD | IT Consulting &amp; Services</title>
+<script>if('scrollRestoration' in history) history.scrollRestoration='manual'; window.scrollTo(0,0);</script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;family=Montserrat+Alternates:wght@200;300&amp;family=Bebas+Neue&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "surface-bright": "#423823",
+                    "surface-variant": "#3e331f",
+                    "background": "#100900",
+                    "inverse-on-surface": "#392f1b",
+                    "tertiary": "#F9DB9A",
+                    "surface-container-high": "#322915",
+                    "on-background": "#f2e0c2",
+                    "inverse-surface": "#f2e0c2",
+                    "on-secondary-fixed-variant": "#6e169a",
+                    "on-tertiary-container": "#402f00",
+                    "inverse-primary": "#9a4600",
+                    "tertiary-container": "#b0965c",
+                    "on-tertiary-fixed": "#251a00",
+                    "secondary-container": "#711a9d",
+                    "primary-fixed-dim": "#ffb68d",
+                    "on-secondary-fixed": "#310049",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary": "#3f2e00",
+                    "on-primary": "#100900",
+                    "surface-container-highest": "#3e331f",
+                    "on-surface": "#f2e0c2",
+                    "surface": "#100900",
+                    "surface-container": "#271e0b",
+                    "on-secondary-container": "#e0a0ff",
+                    "on-secondary": "#500075",
+                    "outline-variant": "#584236",
+                    "on-primary-fixed": "#321200",
+                    "secondary": "#e7b3ff",
+                    "primary": "#F67300",
+                    "on-primary-fixed-variant": "#763300",
+                    "primary-container": "#F67300",
+                    "surface-container-low": "#231a08",
+                    "on-tertiary-fixed-variant": "#584411",
+                    "on-error": "#690005",
+                    "primary-fixed": "#ffdbc9",
+                    "secondary-fixed": "#f6d9ff",
+                    "tertiary-fixed-dim": "#e0c384",
+                    "secondary-fixed-dim": "#e7b3ff",
+                    "tertiary-fixed": "#fddf9e",
+                    "error-container": "#93000a",
+                    "surface-tint": "#F67300",
+                    "surface-dim": "#100900",
+                    "on-primary-container": "#542300",
+                    "on-surface-variant": "#e0c0b0",
+                    "error": "#ffb4ab",
+                    "outline": "#a78b7c",
+                    "surface-container-lowest": "#140d01"
+                },
+                fontFamily: {
+                    "headline": ["Plus Jakarta Sans"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+                },
+                borderRadius: { "DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px" },
+                scale: { '102': '1.02' }
+            },
+        },
+    }
+</script>
+<style>
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    /* ========== PAGE LOAD OVERLAY ========== */
+    .page-loader {
+        position: fixed;
+        inset: 0;
+        background: #100900;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Rotating concentric squares (reflektor-style) */
+    .rotating-square {
+        opacity: 0;
+        transform-origin: 150px 150px; /* center of 300x300 viewBox */
+    }
+
+    /* Logo square (final state) — perimeter of 280x280 = 1120 */
+    .logo-square-path {
+        stroke-dasharray: 1120;
+        stroke-dashoffset: 1120;
+    }
+
+    /* Morph element — the square that becomes the nav */
+    #morph-square {
+        position: fixed;
+        z-index: 10000;
+        pointer-events: none;
+        border: 2px solid rgba(246,115,0,0.5);
+        background: transparent;
+        border-radius: 0;
+    }
+
+    /* Hero light burst - dramatic entrance flash */
+    .hero-light-burst {
+        position: absolute;
+        top: -30%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(ellipse 40% 30% at 50% 20%, rgba(246,175,60,0.8) 0%, rgba(246,115,0,0.3) 25%, transparent 55%);
+        opacity: 0;
+        pointer-events: none;
+        filter: blur(40px);
+    }
+
+    /* Ribbon canvas container */
+    #ribbon-canvas { display: block; }
+
+    /* ========== AURORA — CINEMATIC GOLDEN LIGHT ========== */
+    .aurora-container {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    /* ---- Core golden light source (top-center, like a sunrise) ---- */
+    .aurora-core {
+        position: absolute;
+        top: -18%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: 500px;
+        background: radial-gradient(ellipse 100% 80%, rgba(246,175,60,0.6) 0%, rgba(246,115,0,0.3) 30%, rgba(180,80,0,0.08) 60%, transparent 80%);
+        filter: blur(60px);
+        animation: coreBreathe 8s ease-in-out infinite;
+        opacity: 0;
+    }
+    /* Wider warm halo behind core */
+    .aurora-halo {
+        position: absolute;
+        top: -25%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 1200px;
+        height: 700px;
+        background: radial-gradient(ellipse 80% 60%, rgba(246,115,0,0.12) 0%, rgba(200,100,20,0.04) 40%, transparent 70%);
+        filter: blur(80px);
+        animation: haloPulse 12s ease-in-out infinite;
+        opacity: 0;
+    }
+
+    /* ---- Light rays fanning downward from the source ---- */
+    .aurora-rays {
+        position: absolute;
+        top: -10%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 120%;
+        background:
+            conic-gradient(from 180deg at 50% 0%,
+                transparent 25%,
+                rgba(246,175,60,0.06) 30%,
+                rgba(255,200,100,0.1) 33%,
+                transparent 36%,
+                transparent 39%,
+                rgba(246,115,0,0.08) 42%,
+                rgba(249,219,154,0.05) 44%,
+                transparent 47%,
+                transparent 53%,
+                rgba(249,219,154,0.06) 56%,
+                rgba(246,115,0,0.09) 58%,
+                transparent 61%,
+                transparent 64%,
+                rgba(255,200,100,0.08) 67%,
+                rgba(246,175,60,0.05) 70%,
+                transparent 75%
+            );
+        filter: blur(20px);
+        animation: raysRotate 30s linear infinite;
+        opacity: 0;
+    }
+    /* Second ray layer for depth — slightly offset */
+    .aurora-rays-2 {
+        position: absolute;
+        top: -5%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 110%;
+        height: 110%;
+        background:
+            conic-gradient(from 185deg at 50% 5%,
+                transparent 28%,
+                rgba(246,175,60,0.04) 32%,
+                transparent 35%,
+                transparent 41%,
+                rgba(200,120,30,0.06) 45%,
+                transparent 48%,
+                transparent 52%,
+                rgba(249,219,154,0.04) 55%,
+                transparent 58%,
+                transparent 65%,
+                rgba(246,115,0,0.05) 68%,
+                transparent 72%
+            );
+        filter: blur(30px);
+        animation: raysRotateReverse 40s linear infinite;
+        opacity: 0;
+    }
+
+    /* ---- Soft ambient blobs for warmth ---- */
+    .aurora-ambient-1 {
+        position: absolute;
+        width: 500px; height: 400px;
+        top: 15%; right: 5%;
+        background: radial-gradient(ellipse, rgba(246,115,0,0.1) 0%, transparent 70%);
+        filter: blur(100px);
+        border-radius: 50%;
+        animation: ambientDrift1 20s ease-in-out infinite alternate;
+        opacity: 0;
+    }
+    .aurora-ambient-2 {
+        position: absolute;
+        width: 400px; height: 350px;
+        top: 30%; left: 0%;
+        background: radial-gradient(ellipse, rgba(180,100,30,0.08) 0%, transparent 70%);
+        filter: blur(90px);
+        border-radius: 50%;
+        animation: ambientDrift2 25s ease-in-out infinite alternate;
+        opacity: 0;
+    }
+    .aurora-ambient-3 {
+        position: absolute;
+        width: 300px; height: 250px;
+        bottom: 10%; left: 40%;
+        background: radial-gradient(ellipse, rgba(249,219,154,0.06) 0%, transparent 70%);
+        filter: blur(80px);
+        border-radius: 50%;
+        animation: ambientDrift3 18s ease-in-out infinite alternate;
+        opacity: 0;
+    }
+
+    /* ---- Floating dust / ambient particles ---- */
+    .aurora-particles {
+        position: absolute;
+        inset: 0;
+    }
+    .aurora-particle {
+        position: absolute;
+        width: 2px; height: 2px;
+        border-radius: 50%;
+        background: rgba(249,219,154,0.5);
+        animation: particleFloat linear infinite;
+        opacity: 0;
+    }
+
+    /* ---- Vignette — darker edges, bright center-top ---- */
+    .aurora-vignette {
+        position: absolute;
+        inset: 0;
+        background:
+            radial-gradient(ellipse 70% 50% at 50% 15%, transparent 0%, transparent 30%, rgba(16,9,0,0.4) 60%, #100900 90%),
+            linear-gradient(to top, #100900 0%, transparent 40%);
+        pointer-events: none;
+    }
+
+    /* ---- Keyframes ---- */
+    /* auroraReveal removed — GSAP handles reveal */
+    @keyframes coreBreathe {
+        0%, 100% { transform: translateX(-50%) scale(1); filter: blur(60px) brightness(1); }
+        50% { transform: translateX(-50%) scale(1.08); filter: blur(65px) brightness(1.15); }
+    }
+    @keyframes haloPulse {
+        0%, 100% { transform: translateX(-50%) scale(1); opacity: 0.7; }
+        50% { transform: translateX(-50%) scale(1.05); opacity: 1; }
+    }
+    @keyframes raysRotate {
+        from { transform: translateX(-50%) rotate(0deg); }
+        to { transform: translateX(-50%) rotate(360deg); }
+    }
+    @keyframes raysRotateReverse {
+        from { transform: translateX(-50%) rotate(0deg); }
+        to { transform: translateX(-50%) rotate(-360deg); }
+    }
+    @keyframes ambientDrift1 {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-40px, 20px); }
+    }
+    @keyframes ambientDrift2 {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(30px, -15px); }
+    }
+    @keyframes ambientDrift3 {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-20px, -30px); }
+    }
+    @keyframes particleFloat {
+        0% { transform: translateY(0) translateX(0); opacity: 0; }
+        10% { opacity: 0.6; }
+        90% { opacity: 0.4; }
+        100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+    }
+
+    /* ========== GLASS & CARD STYLES ========== */
+    .glass-card {
+        background: rgba(30, 22, 8, 0.85);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(246, 115, 0, 0.18);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(246, 115, 0, 0.06);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+        background: rgba(40, 30, 10, 0.95);
+        border-color: rgba(246, 115, 0, 0.35);
+        transform: scale(1.02) translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(246, 115, 0, 0.15);
+    }
+    .glow-border:hover {
+        border-color: rgba(246, 115, 0, 0.5);
+    }
+    .obsidian-card {
+        background: rgba(18, 16, 14, 0.9);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .obsidian-card:hover {
+        border-color: rgba(231, 179, 255, 0.3);
+        background: rgba(22, 18, 16, 0.98);
+        transform: scale(1.02) translateY(-6px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(110, 22, 154, 0.15);
+    }
+    .hero-title {
+        text-shadow: 0 0 60px rgba(246, 115, 0, 0.25), 0 0 120px rgba(246, 115, 0, 0.1);
+    }
+    .glow-icon {
+        filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    /* ========== GSAP handles all reveal animations ========== */
+    /* Initial hidden states — GSAP animates these to visible */
+    .gsap-hidden { opacity: 0; }
+
+    /* Floating code panel — perpetual ambient bob (kept, not a reveal) */
+    @keyframes float {
+        0% { transform: translateY(0px) rotate(0deg) scale(1); }
+        33% { transform: translateY(-12px) rotate(0.3deg) scale(1.005); }
+        66% { transform: translateY(-6px) rotate(-0.2deg) scale(1.002); }
+        100% { transform: translateY(0px) rotate(0deg) scale(1); }
+    }
+    .animate-float {
+        animation: float 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        will-change: transform;
+    }
+
+    /* Button shimmer effect */
+    .btn-shimmer {
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-shimmer::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+        animation: shimmer 3s ease-in-out infinite;
+    }
+    @keyframes shimmer {
+        0%, 100% { left: -100%; }
+        50% { left: 150%; }
+    }
+
+    /* Magnetic hover effect for cards */
+    .magnetic-card {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .magnetic-card:hover {
+        transform: translateY(-8px);
+    }
+
+    /* 3D tilt cards in services */
+    #services .glass-card {
+        transform-style: preserve-3d;
+        will-change: transform;
+        position: relative;
+        overflow: hidden;
+    }
+    /* Cursor-following glow overlay — hidden by default, JS controls visibility */
+    .card-glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        opacity: 0;
+        background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(246,115,0,0.08), transparent 40%);
+        z-index: 1;
+    }
+
+    /* Gradient text animation */
+    .gradient-text-anim {
+        background-size: 200% 200%;
+        animation: gradientShift 4s ease infinite;
+    }
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+
+    /* Section divider glow line */
+    .glow-line {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(246,115,0,0.4), rgba(231,179,255,0.3), rgba(249,219,154,0.3), transparent);
+        animation: glowLinePulse 3s ease-in-out infinite alternate;
+    }
+    @keyframes glowLinePulse {
+        0% { opacity: 0.4; }
+        100% { opacity: 1; }
+    }
+
+    /* Counter animation */
+    .count-up {
+        display: inline-block;
+    }
+
+    /* Scroll indicator bounce */
+    .scroll-indicator {
+        animation: scrollBounce 2s ease-in-out infinite;
+    }
+    @keyframes scrollBounce {
+        0%, 100% { transform: translateY(0); opacity: 0.5; }
+        50% { transform: translateY(8px); opacity: 1; }
+    }
+
+    /* Button transition */
+    .btn-transition {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Smooth parallax for sections */
+    .parallax-slow {
+        will-change: transform;
+    }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-x-hidden">
+
+<!-- Scroll Progress Bar -->
+<div id="scroll-progress" style="position:fixed;top:0;left:0;width:0%;height:2px;background:linear-gradient(90deg,#F67300,#F9DB9A,#e7b3ff);z-index:9999;pointer-events:none;box-shadow:0 0 10px rgba(246,115,0,0.5);opacity:0;"></div>
+
+<!-- Background Gradient Shift (scroll-linked) -->
+<div id="bg-gradient-shift" style="position:fixed;inset:0;pointer-events:none;z-index:-1;"></div>
+
+<!-- Cinematic Page Loader -->
+<div class="page-loader" id="page-loader">
+    <!-- Ambient glow -->
+    <div id="loader-glow" style="position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(246,115,0,0.12) 0%,transparent 70%);filter:blur(80px);opacity:0;z-index:1;"></div>
+
+    <!-- Rotating concentric squares layer (reflektor-style) -->
+    <svg id="loader-squares-svg" viewBox="0 0 300 300" style="position:absolute;width:300px;height:300px;z-index:2;">
+        <defs>
+            <filter id="squareGlow"><feGaussianBlur stdDeviation="3"/></filter>
+        </defs>
+        <!-- Outer square — 200x200, perimeter=800 -->
+        <rect class="rotating-square" id="rs-outer" x="50" y="50" width="200" height="200" fill="none" stroke="#F67300" stroke-width="1.5" stroke-dasharray="800" stroke-dashoffset="800"/>
+        <!-- Mid-1 — 160x160, perimeter=640 -->
+        <rect class="rotating-square" id="rs-mid1" x="70" y="70" width="160" height="160" fill="none" stroke="rgba(246,115,0,0.7)" stroke-width="1.5" stroke-dasharray="640" stroke-dashoffset="640"/>
+        <!-- Mid-2 — 120x120, perimeter=480 -->
+        <rect class="rotating-square" id="rs-mid2" x="90" y="90" width="120" height="120" fill="none" stroke="rgba(246,115,0,0.5)" stroke-width="1.5" stroke-dasharray="480" stroke-dashoffset="480"/>
+        <!-- Inner — 80x80, perimeter=320 -->
+        <rect class="rotating-square" id="rs-inner" x="110" y="110" width="80" height="80" fill="none" stroke="rgba(246,115,0,0.3)" stroke-width="1.5" stroke-dasharray="320" stroke-dashoffset="320"/>
+        <!-- Glow layer for outer -->
+        <rect id="rs-glow" x="50" y="50" width="200" height="200" fill="none" stroke="rgba(246,115,0,0.15)" stroke-width="8" opacity="0" filter="url(#squareGlow)"/>
+    </svg>
+
+    <!-- Logo SVG — mirrors Deft_Squad.svg layout: square with DEFT inside + SQUAD below -->
+    <svg id="loader-logo-svg" viewBox="0 0 500 380" style="position:absolute;width:min(440px,85vw);height:auto;z-index:3;opacity:0;" aria-label="DEFT SQUAD logo">
+        <defs>
+            <filter id="logoGlow"><feGaussianBlur stdDeviation="6"/></filter>
+        </defs>
+        <!-- The square — proportionally matched to Deft_Squad.svg (centered, ~56% of width) -->
+        <rect id="logo-square" class="logo-square-path" x="110" y="20" width="280" height="280" fill="none" stroke="#F67300" stroke-width="3" stroke-dasharray="1120" stroke-dashoffset="1120"/>
+        <!-- Square glow layer -->
+        <rect id="logo-square-glow" x="110" y="20" width="280" height="280" fill="none" stroke="rgba(246,115,0,0.3)" stroke-width="14" style="opacity:0;" filter="url(#logoGlow)"/>
+        <!-- DEFT — WHITE, bold, inside the square -->
+        <text id="logo-deft" x="250" y="200" text-anchor="middle" fill="#FFFFFF" font-family="'Plus Jakarta Sans',sans-serif" font-weight="800" font-size="100" letter-spacing="-3" style="opacity:0;">DEFT</text>
+        <!-- SQUAD — ORANGE, light weight, below the square -->
+        <text id="logo-squad" x="250" y="340" text-anchor="middle" fill="#F67300" font-family="'Montserrat Alternates',sans-serif" font-weight="200" font-size="68" letter-spacing="12" style="opacity:0;">SQUAD</text>
+    </svg>
+</div>
+
+<!-- Morph element — starts as the logo square, morphs into nav shape -->
+<div id="morph-square" style="display:none;"></div>
+
+<!-- Navigation -->
+<nav class="fixed top-6 left-1/2 -translate-x-1/2 max-w-7xl rounded-full border border-stone-800/50 z-50 bg-stone-950/60 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] py-3 w-[90%] transition-all duration-500">
+<div class="flex justify-between items-center px-8 py-3">
+<div class="text-2xl font-extrabold tracking-tighter text-primary uppercase font-headline">
+    DEFTSQUAD
+</div>
+<div class="hidden md:flex gap-8 items-center font-['Plus_Jakarta_Sans'] font-bold tracking-tight">
+<a class="text-stone-300/70 hover:text-primary transition-colors" href="#home">Home</a>
+<a class="text-stone-300/70 hover:text-primary transition-colors" href="#services">Services</a>
+<a class="text-stone-300/70 hover:text-primary transition-colors" href="#solutions">Solutions</a>
+<a class="text-stone-300/70 hover:text-primary transition-colors" href="#why-us">Why Us</a>
+<a class="text-stone-300/70 hover:text-primary transition-colors" href="#contact">Contact</a>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-bold btn-transition btn-shimmer hover:scale-95 hover:brightness-110 active:scale-90">
+    Get Started
+</button>
+</div>
+</nav>
+
+<!-- ==================== HERO SECTION ==================== -->
+<section class="relative min-h-screen flex items-center pt-32 pb-20 overflow-hidden" id="home">
+    <!-- Hero Light Burst (flash on entrance) -->
+    <div class="hero-light-burst" id="hero-light-burst"></div>
+
+    <!-- Cinematic light streaks -->
+    <canvas id="ribbon-canvas" style="position:absolute;left:0;top:35%;width:100%;height:30%;pointer-events:none;z-index:1;opacity:0;"></canvas>
+
+    <!-- Aurora Background — Cinematic golden light source -->
+    <div class="aurora-container">
+        <div class="aurora-halo"></div>
+        <div class="aurora-core"></div>
+        <div class="aurora-rays"></div>
+        <div class="aurora-rays-2"></div>
+        <div class="aurora-ambient-1"></div>
+        <div class="aurora-ambient-2"></div>
+        <div class="aurora-ambient-3"></div>
+        <div class="aurora-particles" id="aurora-particles"></div>
+        <div class="aurora-vignette"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-8 relative z-10 w-full grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center">
+        <!-- Left: Text Content with staggered entrance -->
+        <div class="hero-stagger space-y-10">
+            <div class="inline-flex items-center gap-3 bg-[#1a1203]/60 backdrop-blur-md px-5 py-2.5 rounded-full border border-primary/20">
+                <span class="text-primary material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+                <span class="text-xs font-black tracking-[0.2em] uppercase text-tertiary">Google Cloud Partner</span>
+            </div>
+
+            <h1 class="hero-title text-[clamp(3.5rem,8vw,7.5rem)] leading-[0.95] tracking-wide text-white" style="font-family:'Bebas Neue','Plus Jakarta Sans',sans-serif;font-weight:400;">
+                <span class="whitespace-nowrap">FUTURE-DRIVEN</span><br>
+                SOFTWARE<br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-tertiary to-primary gradient-text-anim whitespace-nowrap" style="background-size:200% 200%;">{DEVELOPMENT}</span>
+            </h1>
+
+            <p class="text-lg text-stone-400/90 max-w-xl leading-relaxed font-medium">
+                We craft high-quality digital solutions that help businesses grow, scale, and innovate in a fast-changing world with professional guidance and actionable technology.
+            </p>
+
+            <div class="flex flex-wrap gap-5 pt-4">
+                <a href="#services" class="bg-white text-stone-950 px-10 py-4 rounded-full font-black text-lg shadow-[0_0_30px_rgba(255,255,255,0.1)] btn-transition btn-shimmer hover:scale-105 active:scale-95 flex items-center gap-3">
+                    Explore Services
+                    <span class="material-symbols-outlined font-black" data-icon="arrow_outward">arrow_outward</span>
+                </a>
+                <a href="#contact" class="border border-stone-700 bg-white/5 backdrop-blur-sm text-stone-300 px-10 py-4 rounded-full font-black text-lg btn-transition hover:bg-white/10 hover:border-primary/50 hover:scale-105 active:scale-95">
+                    Contact Us
+                </a>
+            </div>
+        </div>
+
+        <!-- Right: Code Panel with cinematic entrance -->
+        <div class="relative hidden lg:block hero-panel-enter">
+            <div class="glass-card animate-float rounded-[2.5rem] p-1 shadow-2xl overflow-hidden border border-white/10">
+                <div class="bg-stone-900/80 p-6 rounded-[2rem]">
+                    <div class="flex gap-2 mb-8">
+                        <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                    </div>
+                    <div class="space-y-4 font-mono text-sm">
+                        <div class="type-line flex gap-4"><span class="text-stone-600">01</span><span class="text-primary">const</span><span class="text-tertiary">service</span><span class="text-white">=</span><span class="text-stone-300">"Cloud Native"</span></div>
+                        <div class="type-line flex gap-4"><span class="text-stone-600">02</span><span class="text-primary">async function</span><span class="text-secondary">deploy</span><span class="text-white">() {</span></div>
+                        <div class="type-line flex gap-4 pl-8"><span class="text-stone-600">03</span><span class="text-white">await</span><span class="text-tertiary">cloud.optimize</span><span class="text-white">();</span></div>
+                        <div class="type-line flex gap-4 pl-8"><span class="text-stone-600">04</span><span class="text-primary">return</span><span class="text-stone-300">"SUCCESS_200"</span></div>
+                        <div class="type-line flex gap-4"><span class="text-stone-600">05</span><span class="text-white">}</span></div>
+                    </div>
+                    <div class="mt-12 status-pop glass-card bg-primary/10 border-primary/30 p-4 rounded-2xl flex items-center justify-between hover:scale-100 transform-none">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
+                                <span class="material-symbols-outlined text-primary text-xl" data-icon="monitoring">monitoring</span>
+                            </div>
+                            <div>
+                                <p class="text-[10px] uppercase tracking-widest text-stone-500 font-bold">Network Performance</p>
+                                <p class="text-white font-bold">99.9% Uptime</p>
+                            </div>
+                        </div>
+                        <div class="text-primary font-black animate-pulse">ACTIVE</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 scroll-indicator">
+        <span class="text-[10px] uppercase tracking-[0.3em] text-stone-600 font-bold">Scroll to explore</span>
+        <span class="material-symbols-outlined text-primary text-sm" data-icon="keyboard_arrow_down">keyboard_arrow_down</span>
+    </div>
+</section>
+
+<!-- Glow divider -->
+<div class="glow-line"></div>
+
+<!-- ==================== STATS BAR ==================== -->
+<section class="bg-surface-container-low py-16 border-y border-outline-variant/10" id="stats-bar">
+<div class="max-w-7xl mx-auto px-8 grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="text-center group">
+<div class="text-4xl font-black text-primary font-headline group-hover:scale-110 transition-transform count-up" data-target="6">0+</div>
+<div class="text-xs uppercase tracking-[0.2em] text-stone-500 font-bold mt-2">Core Services</div>
+</div>
+<div class="text-center group">
+<div class="text-4xl font-black text-tertiary font-headline group-hover:scale-110 transition-transform">99.9%</div>
+<div class="text-xs uppercase tracking-[0.2em] text-stone-500 font-bold mt-2">Uptime SLA</div>
+</div>
+<div class="text-center group">
+<div class="text-4xl font-black text-white font-headline group-hover:scale-110 transition-transform">24/7</div>
+<div class="text-xs uppercase tracking-[0.2em] text-stone-500 font-bold mt-2">Expert Support</div>
+</div>
+<div class="text-center group">
+<div class="text-4xl font-black text-primary font-headline group-hover:scale-110 transition-transform">GCP</div>
+<div class="text-xs uppercase tracking-[0.2em] text-stone-500 font-bold mt-2">Cloud Partner</div>
+</div>
+</div>
+</section>
+
+<!-- ==================== CORE SERVICES ==================== -->
+<section class="py-32 relative overflow-hidden" id="services">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_50%,rgba(246,115,0,0.04),transparent)]"></div>
+<div class="max-w-7xl mx-auto px-8 relative z-10">
+<div class="mb-20 text-center">
+<span class="text-primary text-xs font-black tracking-[0.4em] uppercase mb-4 block">Our Expertise</span>
+<h2 class="text-5xl md:text-6xl font-black font-headline tracking-tighter mb-6 text-white">Core <span class="text-primary">Services</span></h2>
+<div class="h-1.5 w-24 bg-primary rounded-full mx-auto"></div>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<div class="glass-card magnetic-card p-10 rounded-[2.5rem] border border-white/5 glow-border group">
+<div class="card-glow"></div>
+<div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary glow-icon group-hover:scale-110 transition-transform" data-icon="cloud_done">cloud_done</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 font-headline text-white tracking-tight">Cloud Native</h3>
+<p class="text-stone-400 text-sm leading-relaxed font-medium">Modern applications designed for the cloud, leveraging Microservices, CI/CD pipelines, and robust DevSecOps practices.</p>
+</div>
+<div class="glass-card magnetic-card p-10 rounded-[2.5rem] border border-white/5 glow-border group">
+<div class="card-glow"></div>
+<div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary glow-icon group-hover:scale-110 transition-transform" data-icon="move_up">move_up</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 font-headline text-white tracking-tight">Cloud Migration</h3>
+<p class="text-stone-400 text-sm leading-relaxed font-medium">Expert planning and execution of zero-downtime migrations between on-premises and multi-cloud environments.</p>
+</div>
+<div class="glass-card magnetic-card p-10 rounded-[2.5rem] border border-white/5 glow-border group">
+<div class="card-glow"></div>
+<div class="w-16 h-16 rounded-2xl bg-tertiary/10 flex items-center justify-center mb-8 group-hover:bg-tertiary/20 transition-colors">
+<span class="material-symbols-outlined text-4xl text-tertiary glow-icon group-hover:scale-110 transition-transform" data-icon="monitoring">monitoring</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 font-headline text-white tracking-tight">Cloud Optimization</h3>
+<p class="text-stone-400 text-sm leading-relaxed font-medium">Strategic analysis of resource utilization to eliminate waste and maximize your cloud ROI and performance.</p>
+</div>
+<div class="glass-card magnetic-card p-10 rounded-[2.5rem] border border-white/5 glow-border group">
+<div class="card-glow"></div>
+<div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-8 group-hover:bg-secondary/20 transition-colors">
+<span class="material-symbols-outlined text-4xl text-secondary glow-icon group-hover:scale-110 transition-transform" data-icon="settings_input_component">settings_input_component</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 font-headline text-white tracking-tight">Microservices</h3>
+<p class="text-stone-400 text-sm leading-relaxed font-medium">Decompose monolithic systems into agile, decoupled services that communicate via high-performance APIs.</p>
+</div>
+<div class="glass-card magnetic-card p-10 rounded-[2.5rem] border border-white/5 glow-border group">
+<div class="card-glow"></div>
+<div class="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center mb-8 group-hover:bg-secondary/20 transition-colors">
+<span class="material-symbols-outlined text-4xl text-secondary glow-icon group-hover:scale-110 transition-transform" data-icon="grid_view">grid_view</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 font-headline text-white tracking-tight">Micro Frontend</h3>
+<p class="text-stone-400 text-sm leading-relaxed font-medium">Scale your web architecture by decomposing complex front-ends into manageable, independent applications.</p>
+</div>
+<div class="glass-card magnetic-card p-10 rounded-[2.5rem] border border-white/5 glow-border group">
+<div class="card-glow"></div>
+<div class="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-8 group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary glow-icon group-hover:scale-110 transition-transform" data-icon="smartphone">smartphone</span>
+</div>
+<h3 class="text-2xl font-bold mb-4 font-headline text-white tracking-tight">Mobile Dev</h3>
+<p class="text-stone-400 text-sm leading-relaxed font-medium">High-performance native and cross-platform mobile solutions built for iOS and Android enterprise needs.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Glow divider -->
+<div class="glow-line"></div>
+
+<!-- ==================== ENTERPRISE SOLUTIONS ==================== -->
+<section class="py-32 bg-stone-950 relative overflow-hidden" id="solutions">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(110,22,154,0.05),transparent)]"></div>
+<div class="max-w-7xl mx-auto px-8 relative z-10">
+<div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+<div class="max-w-2xl">
+<div class="flex items-center gap-4 mb-4">
+<div class="h-[1px] w-12 bg-secondary/50"></div>
+<span class="text-secondary text-[10px] font-black tracking-[0.5em] uppercase">Enterprise Grade</span>
+</div>
+<h2 class="text-5xl md:text-7xl font-black font-headline tracking-tighter text-white mb-6">Advanced <span class="text-secondary">Infrastructure</span></h2>
+<p class="text-stone-500 text-xl font-medium leading-relaxed">Scalable, secure, and cost-effective IT strategies tailored for the rigorous demands of global business operations.</p>
+</div>
+<div class="hidden md:block">
+<div class="bg-secondary/5 border border-secondary/20 px-6 py-2 rounded-full">
+<span class="text-[10px] font-black tracking-[0.4em] text-secondary uppercase">Obsidian Architect v2.0</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<div class="md:col-span-8 obsidian-card magnetic-card p-12 rounded-[3rem] relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-64 h-64 bg-secondary/5 blur-[100px] -mr-32 -mt-32"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-12">
+<div class="p-4 bg-secondary/10 rounded-2xl border border-secondary/20 text-secondary">
+<span class="material-symbols-outlined text-4xl" data-icon="hub">hub</span>
+</div>
+<h3 class="text-3xl font-bold font-headline text-white">Hybrid Cloud Ecosystems</h3>
+</div>
+<p class="text-stone-400 text-lg max-w-xl mb-12 leading-relaxed">Seamlessly integrate private and public cloud infrastructures for maximum agility, ensuring high availability and robust data governance across all environments.</p>
+<div class="flex gap-4">
+<span class="px-4 py-1.5 rounded-full bg-stone-900 border border-stone-800 text-[10px] font-bold text-stone-500 uppercase tracking-widest">Multi-Cloud</span>
+<span class="px-4 py-1.5 rounded-full bg-stone-900 border border-stone-800 text-[10px] font-bold text-stone-500 uppercase tracking-widest">Zero Trust</span>
+</div>
+</div>
+</div>
+<div class="md:col-span-4 obsidian-card magnetic-card p-12 rounded-[3rem] group">
+<div class="p-4 bg-primary/10 rounded-2xl border border-primary/20 text-primary w-fit mb-12">
+<span class="material-symbols-outlined text-4xl" data-icon="support_agent">support_agent</span>
+</div>
+<h3 class="text-2xl font-bold font-headline text-white mb-6">Managed Support</h3>
+<p class="text-stone-400 text-sm leading-relaxed mb-8">Proactive 24/7 monitoring and predictive maintenance to ensure your critical systems never face downtime.</p>
+<a class="text-primary text-xs font-black uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all" href="#">
+    Learn More <span class="material-symbols-outlined text-sm" data-icon="east">east</span>
+</a>
+</div>
+<div class="md:col-span-4 obsidian-card magnetic-card p-10 rounded-[2.5rem] group">
+<div class="p-3 bg-tertiary/10 rounded-xl border border-tertiary/20 text-tertiary w-fit mb-8">
+<span class="material-symbols-outlined text-3xl" data-icon="security_update_good">security_update_good</span>
+</div>
+<h3 class="text-xl font-bold font-headline text-white mb-4">Disaster Recovery</h3>
+<p class="text-stone-500 text-sm">Comprehensive business continuity planning and automated backup solutions for resilient data protection.</p>
+</div>
+<div class="md:col-span-4 obsidian-card magnetic-card p-10 rounded-[2.5rem] group">
+<div class="p-3 bg-secondary/10 rounded-xl border border-secondary/20 text-secondary w-fit mb-8">
+<span class="material-symbols-outlined text-3xl" data-icon="desktop_windows">desktop_windows</span>
+</div>
+<h3 class="text-xl font-bold font-headline text-white mb-4">Cloud Desktops</h3>
+<p class="text-stone-500 text-sm">Empower your remote workforce with secure, high-performance virtual desktop environments accessible anywhere.</p>
+</div>
+<div class="md:col-span-4 obsidian-card magnetic-card p-10 rounded-[2.5rem] group">
+<div class="p-3 bg-primary/10 rounded-xl border border-primary/20 text-primary w-fit mb-8">
+<span class="material-symbols-outlined text-3xl" data-icon="lan">lan</span>
+</div>
+<h3 class="text-xl font-bold font-headline text-white mb-4">SD-WAN Solutions</h3>
+<p class="text-stone-500 text-sm">Software-defined networking that optimizes traffic and enhances connectivity for global enterprise branch offices.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- ==================== WHY CHOOSE US ==================== -->
+<section class="py-32 relative overflow-hidden" id="why-us">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(249,219,154,0.03),transparent)]"></div>
+<div class="max-w-7xl mx-auto px-8 relative z-10">
+<div class="text-center mb-16">
+<h2 class="text-5xl font-black font-headline tracking-tighter mb-4 text-white">The <span class="text-tertiary">Difference</span></h2>
+<p class="text-stone-400 max-w-xl mx-auto text-lg">Why leading enterprises trust DEFTSQUAD for their mission-critical transformations.</p>
+</div>
+</div>
+
+<!-- Seamless carousel (CodePen-exact approach) -->
+<div class="why-gallery relative overflow-hidden" style="height:600px;">
+  <ul class="why-cards absolute" style="width:22rem; height:28rem; top:45%; left:50%; transform:translate(-50%,-50%);">
+    <li class="why-card absolute top-0 left-0 w-full rounded-[2rem] border border-primary/20 bg-[#1e1608] p-10 md:p-12" style="aspect-ratio:9/14;">
+      <span class="text-7xl font-black font-headline text-primary/10 absolute top-6 right-8">01</span>
+      <div class="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-6"><span class="material-symbols-outlined text-primary text-2xl" data-icon="group">group</span></div>
+      <h4 class="font-black font-headline text-primary text-2xl mb-4">Customer First</h4>
+      <p class="text-sm text-stone-400 leading-relaxed">Customers come first is a fundamental value. We comprehend our clients' needs and provide solutions that meet or exceed them with clear communication and ongoing support.</p>
+    </li>
+    <li class="why-card absolute top-0 left-0 w-full rounded-[2rem] border border-secondary/20 bg-[#1e1608] p-10 md:p-12" style="aspect-ratio:9/14;">
+      <span class="text-7xl font-black font-headline text-secondary/10 absolute top-6 right-8">02</span>
+      <div class="w-14 h-14 rounded-2xl bg-secondary/10 border border-secondary/30 flex items-center justify-center mb-6"><span class="material-symbols-outlined text-secondary text-2xl" data-icon="shield">shield</span></div>
+      <h4 class="font-black font-headline text-secondary text-2xl mb-4">Security</h4>
+      <p class="text-sm text-stone-400 leading-relaxed">Security is our top priority. We adhere to industry best practices and employ encryption, authentication, authorization, and auditing methods to protect your data.</p>
+    </li>
+    <li class="why-card absolute top-0 left-0 w-full rounded-[2rem] border border-tertiary/20 bg-[#1e1608] p-10 md:p-12" style="aspect-ratio:9/14;">
+      <span class="text-7xl font-black font-headline text-tertiary/10 absolute top-6 right-8">03</span>
+      <div class="w-14 h-14 rounded-2xl bg-tertiary/10 border border-tertiary/30 flex items-center justify-center mb-6"><span class="material-symbols-outlined text-tertiary text-2xl" data-icon="favorite">favorite</span></div>
+      <h4 class="font-black font-headline text-tertiary text-2xl mb-4">Solution with Passion</h4>
+      <p class="text-sm text-stone-400 leading-relaxed">We deliver high-quality IT solutions with enthusiasm and diligence. Our skilled team manages any project, from web development to cloud computing, with efficiency.</p>
+    </li>
+    <li class="why-card absolute top-0 left-0 w-full rounded-[2rem] border border-primary/20 bg-[#1e1608] p-10 md:p-12" style="aspect-ratio:9/14;">
+      <span class="text-7xl font-black font-headline text-primary/10 absolute top-6 right-8">04</span>
+      <div class="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-6"><span class="material-symbols-outlined text-primary text-2xl" data-icon="schedule">schedule</span></div>
+      <h4 class="font-black font-headline text-primary text-2xl mb-4">Timely Delivery</h4>
+      <p class="text-sm text-stone-400 leading-relaxed">Our proven methodology ensures every project stage is planned, executed and monitored with precision. We deliver high-quality results within scope, schedule and budget.</p>
+    </li>
+    <li class="why-card absolute top-0 left-0 w-full rounded-[2rem] border border-secondary/20 bg-[#1e1608] p-10 md:p-12" style="aspect-ratio:9/14;">
+      <span class="text-7xl font-black font-headline text-secondary/10 absolute top-6 right-8">05</span>
+      <div class="w-14 h-14 rounded-2xl bg-secondary/10 border border-secondary/30 flex items-center justify-center mb-6"><span class="material-symbols-outlined text-secondary text-2xl" data-icon="cloud_upload">cloud_upload</span></div>
+      <h4 class="font-black font-headline text-secondary text-2xl mb-4">Scalable Solutions</h4>
+      <p class="text-sm text-stone-400 leading-relaxed">We provide cloud consulting, migration, development, and security services with expertise in Azure, AWS, Google Cloud Platform, and IBM Cloud.</p>
+    </li>
+    <li class="why-card absolute top-0 left-0 w-full rounded-[2rem] border border-tertiary/20 bg-[#1e1608] p-10 md:p-12" style="aspect-ratio:9/14;">
+      <span class="text-7xl font-black font-headline text-tertiary/10 absolute top-6 right-8">06</span>
+      <div class="w-14 h-14 rounded-2xl bg-tertiary/10 border border-tertiary/30 flex items-center justify-center mb-6"><span class="material-symbols-outlined text-tertiary text-2xl" data-icon="handshake">handshake</span></div>
+      <h4 class="font-black font-headline text-tertiary text-2xl mb-4">Trusted Partnership</h4>
+      <p class="text-sm text-stone-400 leading-relaxed">We build lasting relationships based on transparency and trust. Our collaborative approach ensures alignment with your business goals at every stage of the journey.</p>
+    </li>
+    <li class="why-card absolute top-0 left-0 w-full rounded-[2rem] border border-primary/20 bg-[#1e1608] p-10 md:p-12" style="aspect-ratio:9/14;">
+      <span class="text-7xl font-black font-headline text-primary/10 absolute top-6 right-8">07</span>
+      <div class="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-6"><span class="material-symbols-outlined text-primary text-2xl" data-icon="bolt">bolt</span></div>
+      <h4 class="font-black font-headline text-primary text-2xl mb-4">Rapid Innovation</h4>
+      <p class="text-sm text-stone-400 leading-relaxed">We stay ahead of the curve with cutting-edge technologies and agile methodologies. Our team continuously evolves to deliver innovative solutions that drive competitive advantage.</p>
+    </li>
+  </ul>
+  <!-- Navigation -->
+  <div class="flex justify-center gap-4 absolute bottom-6 left-1/2 -translate-x-1/2 z-20">
+    <button id="why-prev" class="w-12 h-12 rounded-full border border-stone-700 bg-stone-900/80 backdrop-blur-sm text-stone-400 hover:text-primary hover:border-primary/50 transition-all duration-200 flex items-center justify-center" aria-label="Previous">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <button id="why-next" class="w-12 h-12 rounded-full border border-stone-700 bg-stone-900/80 backdrop-blur-sm text-stone-400 hover:text-primary hover:border-primary/50 transition-all duration-200 flex items-center justify-center" aria-label="Next">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+</div>
+<div class="why-drag-proxy" style="visibility:hidden; position:absolute;"></div>
+</section>
+
+<!-- Glow divider -->
+<div class="glow-line"></div>
+
+<!-- ==================== PARTNER BANNER ==================== -->
+<section class="py-20 bg-gradient-to-r from-background via-stone-900 to-background text-center" id="partner-banner">
+<div class="max-w-7xl mx-auto px-8 flex flex-col items-center">
+<img alt="Google Cloud Partner Badge" class="h-24 mb-6 brightness-125 grayscale hover:grayscale-0 transition-all duration-500 cursor-pointer hover:scale-110 active:scale-95" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1qPksPnlFs5-fyTCUnB8bupL510sIyjXgIkQLPmnHaA8HEh8ajZLddM4QCp729cLYuUSbwTo9fp7TQV26r-sCVY2btjarIIE-eLmrHZzSf6faJGfl1JKhnoW5jA2VZRJ5vbzugXZTeEdAbQaTo-BSPySl2qP_5DM6v0xMU11EFa0P-C3UuBFU2tacqAMKQxqw0krLoU7pyyDt4k95nQzIdVGsfettMhrkmbNV9AWDBAZvCzKZy22SyEBPGiMCqmczljHoMEaXJp0"/>
+<h3 class="text-sm font-black font-headline tracking-[0.4em] text-stone-500 uppercase">Certified Google Cloud Partner</h3>
+</div>
+</section>
+
+<!-- ==================== CONTACT ==================== -->
+<section class="py-32 relative overflow-hidden" id="contact">
+<div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-primary/5 blur-[150px] rounded-full pointer-events-none"></div>
+<div class="absolute top-0 left-0 w-[400px] h-[400px] bg-secondary/3 blur-[120px] rounded-full pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-8 grid lg:grid-cols-2 gap-24 items-center">
+<div>
+<h2 class="text-5xl font-black font-headline tracking-tighter mb-10 text-white">Initiate <span class="text-primary">Contact</span></h2>
+<div class="space-y-10">
+<div class="flex items-start gap-6 group">
+<span class="material-symbols-outlined text-primary p-4 glass-card rounded-2xl group-hover:bg-primary/20 transition-all duration-300" data-icon="location_on">location_on</span>
+<div>
+<p class="font-bold font-headline text-white text-lg">Visit Our HQ</p>
+<p class="text-stone-400">5005 W Royal Ln Suite 183k, Irving, TX 75063</p>
+</div>
+</div>
+<div class="flex items-start gap-6 group">
+<span class="material-symbols-outlined text-secondary p-4 glass-card rounded-2xl group-hover:bg-secondary/20 transition-all duration-300" data-icon="call">call</span>
+<div>
+<p class="font-bold font-headline text-white text-lg">Technical Line</p>
+<p class="text-stone-400">+1 469.599.4789</p>
+</div>
+</div>
+<div class="flex items-start gap-6 group">
+<span class="material-symbols-outlined text-tertiary p-4 glass-card rounded-2xl group-hover:bg-tertiary/20 transition-all duration-300" data-icon="mail">mail</span>
+<div>
+<p class="font-bold font-headline text-white text-lg">Email Us</p>
+<p class="text-stone-400">info@deftsquad.com</p>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-card p-12 rounded-[3rem] border-white/5 shadow-2xl">
+<form class="space-y-8">
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-3">
+<label class="text-[10px] uppercase tracking-[0.2em] font-black text-stone-500">First Name</label>
+<input class="w-full bg-stone-900/50 border border-white/5 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent text-white p-5 transition-all" placeholder="John" type="text"/>
+</div>
+<div class="space-y-3">
+<label class="text-[10px] uppercase tracking-[0.2em] font-black text-stone-500">Last Name</label>
+<input class="w-full bg-stone-900/50 border border-white/5 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent text-white p-5 transition-all" placeholder="Doe" type="text"/>
+</div>
+</div>
+<div class="space-y-3">
+<label class="text-[10px] uppercase tracking-[0.2em] font-black text-stone-500">Email Address</label>
+<input class="w-full bg-stone-900/50 border border-white/5 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent text-white p-5 transition-all" placeholder="john@company.com" type="email"/>
+</div>
+<div class="space-y-3">
+<label class="text-[10px] uppercase tracking-[0.2em] font-black text-stone-500">Project Details</label>
+<textarea class="w-full bg-stone-900/50 border border-white/5 rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent text-white p-5 h-40 transition-all resize-none" placeholder="Tell us about your IT challenges..."></textarea>
+</div>
+<button class="w-full bg-primary text-on-primary font-black py-5 rounded-full text-lg shadow-xl shadow-primary/20 btn-transition btn-shimmer hover:scale-[0.98] hover:brightness-110 active:scale-95 flex items-center justify-center gap-3">
+<span class="material-symbols-outlined font-black" data-icon="send">send</span>
+    Transmit Message
+</button>
+</form>
+</div>
+</div>
+</section>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="bg-stone-950 border-t border-stone-900">
+<div class="flex flex-col md:flex-row justify-between items-start gap-12 px-8 py-20 max-w-7xl mx-auto">
+<div class="max-w-sm">
+<div class="text-2xl font-black text-primary mb-6 uppercase font-headline">DEFTSQUAD</div>
+<p class="font-['Inter'] text-sm text-stone-400 leading-relaxed">
+    Premier IT consulting and architecture. Building secure, scalable, and innovative solutions for the digital age.
+</p>
+<div class="flex gap-6 mt-10">
+<span class="material-symbols-outlined text-stone-600 hover:text-primary cursor-pointer transition-all duration-300 hover:scale-125" data-icon="share">share</span>
+<span class="material-symbols-outlined text-stone-600 hover:text-secondary cursor-pointer transition-all duration-300 hover:scale-125" data-icon="public">public</span>
+<span class="material-symbols-outlined text-stone-600 hover:text-tertiary cursor-pointer transition-all duration-300 hover:scale-125" data-icon="chat">chat</span>
+</div>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-16">
+<div>
+<h5 class="text-white font-black mb-8 text-[10px] uppercase tracking-[0.3em]">Navigation</h5>
+<ul class="space-y-4 font-['Inter'] text-sm text-stone-500">
+<li><a class="hover:text-primary transition-colors" href="#home">Home</a></li>
+<li><a class="hover:text-primary transition-colors" href="#services">Services</a></li>
+<li><a class="hover:text-primary transition-colors" href="#solutions">Solutions</a></li>
+<li><a class="hover:text-primary transition-colors" href="#why-us">Why Us</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-white font-black mb-8 text-[10px] uppercase tracking-[0.3em]">Legal</h5>
+<ul class="space-y-4 font-['Inter'] text-sm text-stone-500">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+<div class="col-span-2 sm:col-span-1">
+<h5 class="text-white font-black mb-8 text-[10px] uppercase tracking-[0.3em]">Support</h5>
+<p class="text-sm text-stone-500 mb-2 hover:text-primary transition-colors">+1 469.599.4789</p>
+<p class="text-sm text-stone-500 hover:text-primary transition-colors">info@deftsquad.com</p>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto px-8 py-10 border-t border-stone-900/50 flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="font-['Inter'] text-xs text-stone-600">&copy; 2024 DEFTSQUAD IT Consulting. All rights reserved.</p>
+<div class="flex items-center gap-3">
+<span class="w-1.5 h-1.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(246,115,0,0.8)]"></span>
+<span class="text-[9px] uppercase tracking-[0.3em] font-black text-stone-700">Network Status: Operational</span>
+</div>
+</div>
+</footer>
+
+<!-- GSAP CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Draggable);
+ScrollTrigger.config({ limitCallbacks: true });
+
+// =====================================================
+// UTILITY: Manual word-split for headings (free SplitText alternative)
+// =====================================================
+function splitTextToSpans(selector) {
+    const el = document.querySelector(selector);
+    if (!el) return [];
+    // Use a temporary div to parse HTML properly
+    const temp = document.createElement('div');
+    temp.innerHTML = el.innerHTML;
+
+    function wrapTextNodes(node) {
+        const children = Array.from(node.childNodes);
+        children.forEach(child => {
+            if (child.nodeType === 3) { // Text node
+                const words = child.textContent.split(/(\s+)/);
+                const frag = document.createDocumentFragment();
+                words.forEach(w => {
+                    if (/^\s+$/.test(w) || w === '') {
+                        frag.appendChild(document.createTextNode(w));
+                    } else {
+                        const outer = document.createElement('span');
+                        outer.className = 'inline-block';
+                        outer.style.overflow = 'hidden';
+                        outer.style.verticalAlign = 'top';
+                        const inner = document.createElement('span');
+                        inner.className = 'gsap-word inline-block';
+                        inner.textContent = w;
+                        outer.appendChild(inner);
+                        frag.appendChild(outer);
+                    }
+                });
+                child.replaceWith(frag);
+            } else if (child.nodeType === 1) { // Element node
+                wrapTextNodes(child); // recurse into spans etc.
+            }
+        });
+    }
+
+    wrapTextNodes(temp);
+    el.innerHTML = temp.innerHTML;
+    return el.querySelectorAll('.gsap-word');
+}
+
+// =====================================================
+// 1. CINEMATIC INTRO — Rotating Squares → Logo → Morph-to-Nav → Hero
+// =====================================================
+document.body.style.overflow = 'hidden';
+
+// --- Three.js Ribbon Canvas (DNA double-helix particle effect) ---
+var ribbonAnimId = null;
+var ribbonPaused = false;
+(function() {
+    var canvas = document.getElementById('ribbon-canvas');
+    if (!canvas || typeof THREE === 'undefined') return;
+
+    var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false });
+    renderer.setPixelRatio(1);
+    renderer.setClearColor(0x000000, 0);
+
+    // Orthographic camera — wide horizontal view
+    var frustumH = 4;
+    var aspect = canvas.clientWidth / canvas.clientHeight;
+    var frustumW = frustumH * aspect;
+    var camera = new THREE.OrthographicCamera(-frustumW / 2, frustumW / 2, frustumH / 2, -frustumH / 2, 0.1, 100);
+    camera.position.z = 5;
+
+    var scene = new THREE.Scene();
+
+    // Particle geometry
+    var count = 30000;
+    var radius = 1.2;
+    var positions = new Float32Array(count * 3);
+    var scales = new Float32Array(count);
+    var strands = new Float32Array(count);
+    var radii = new Float32Array(count);
+
+    for (var i = 0; i < count; i++) {
+        var strand = i % 2;
+        var x = (Math.random() - 0.5) * 36;
+        var angle = Math.random() * Math.PI * 2;
+        var r = Math.pow(Math.random(), 2) * radius;
+        var y = Math.cos(angle) * r + (Math.random() - 0.5) * 0.1;
+        var z = Math.sin(angle) * r + (Math.random() - 0.5) * 0.1;
+
+        positions[i * 3] = x;
+        positions[i * 3 + 1] = y;
+        positions[i * 3 + 2] = z;
+        scales[i] = 0.5 + Math.random() * 0.5;
+        strands[i] = strand;
+        radii[i] = 0.5 + Math.random() * 0.5;
+    }
+
+    var geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+    geometry.setAttribute('aStrand', new THREE.BufferAttribute(strands, 1));
+    geometry.setAttribute('aRadius', new THREE.BufferAttribute(radii, 1));
+
+    // GLSL Shaders — DEFTSQUAD orange/gold palette
+    var vertexShader = [
+        'uniform float uTime;',
+        'attribute float aScale;',
+        'attribute float aStrand;',
+        'attribute float aRadius;',
+        'varying float vAlpha;',
+        'varying float vStrand;',
+        'varying float vRadius;',
+        'void main() {',
+        '  vec3 pos = position;',
+        '  // Offset strands apart',
+        '  pos.y += (aStrand - 0.5) * 0.6;',
+        '  // Twist rotation',
+        '  float twistAngle = pos.x * 0.5 + uTime * 0.4;',
+        '  float cosA = cos(twistAngle);',
+        '  float sinA = sin(twistAngle);',
+        '  float newY = pos.y * cosA - pos.z * sinA;',
+        '  float newZ = pos.y * sinA + pos.z * cosA;',
+        '  pos.y = newY;',
+        '  pos.z = newZ * 0.6;',
+        '  // Sine wave',
+        '  pos.y += sin(pos.x * 0.5 + uTime * 0.8) * 0.1725;',
+        '  vec4 viewPosition = modelViewMatrix * vec4(pos, 1.0);',
+        '  gl_Position = projectionMatrix * viewPosition;',
+        '  gl_PointSize = 20.0 * aScale * (1.0 / -viewPosition.z);',
+        '  vAlpha = 0.6 + 0.4 * sin(uTime * 2.0 + pos.x * 5.0 + aStrand * 3.14);',
+        '  vStrand = aStrand;',
+        '  vRadius = aRadius;',
+        '}'
+    ].join('\n');
+
+    var fragmentShader = [
+        'varying float vAlpha;',
+        'varying float vStrand;',
+        'varying float vRadius;',
+        'uniform vec3 uColorWarm1;',
+        'uniform vec3 uColorWarm2;',
+        'uniform vec3 uColorCool1;',
+        'uniform vec3 uColorCool2;',
+        'void main() {',
+        '  float dist = length(gl_PointCoord - vec2(0.5));',
+        '  float strength = 1.0 - dist * 2.0;',
+        '  strength = pow(max(strength, 0.0), 4.0);',
+        '  if (strength < 0.01) discard;',
+        '  // Blend colors based on strand and radius',
+        '  vec3 warm = mix(uColorWarm1, uColorWarm2, vRadius);',
+        '  vec3 cool = mix(uColorCool1, uColorCool2, vRadius);',
+        '  vec3 color = mix(warm, cool, vStrand);',
+        '  gl_FragColor = vec4(color * 1.2, strength * vAlpha * 0.7);',
+        '}'
+    ].join('\n');
+
+    var material = new THREE.ShaderMaterial({
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
+        uniforms: {
+            uTime: { value: 0 },
+            // Deep DEFTSQUAD palette — no white, all warm amber/orange
+            uColorWarm1: { value: new THREE.Color(0.6, 0.28, 0.0) },    // deep burnt orange
+            uColorWarm2: { value: new THREE.Color(0.75, 0.38, 0.05) },  // warm amber
+            uColorCool1: { value: new THREE.Color(0.5, 0.22, 0.0) },    // dark rust
+            uColorCool2: { value: new THREE.Color(0.65, 0.32, 0.02) }   // muted bronze
+        },
+        transparent: true,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+    });
+
+    var points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+    // Resize handler
+    function onResize() {
+        var w = canvas.clientWidth;
+        var h = canvas.clientHeight;
+        renderer.setSize(w, h, false);
+        var a = w / h;
+        var fw = frustumH * a;
+        camera.left = -fw / 2;
+        camera.right = fw / 2;
+        camera.updateProjectionMatrix();
+    }
+    onResize();
+    window.addEventListener('resize', onResize);
+
+    // Animation loop
+    function animate() {
+        ribbonAnimId = requestAnimationFrame(animate);
+        if (ribbonPaused) return;
+        material.uniforms.uTime.value += 0.016;
+        renderer.render(scene, camera);
+    }
+    animate();
+
+    // Pause when off-screen
+    var observer = new IntersectionObserver(function(entries) {
+        ribbonPaused = !entries[0].isIntersecting;
+    }, { threshold: 0.05 });
+    observer.observe(canvas);
+})();
+
+// Initial hidden states for page elements
+gsap.set('.aurora-core, .aurora-halo, .aurora-rays, .aurora-rays-2, .aurora-ambient-1, .aurora-ambient-2, .aurora-ambient-3', { opacity: 0 });
+gsap.set('.hero-stagger > *', { opacity: 0, y: 50 });
+gsap.set('.hero-panel-enter', { opacity: 0, x: 100, scale: 0.9, rotateY: 8 });
+gsap.set('.type-line', { opacity: 0, x: -20 });
+gsap.set('.status-pop', { opacity: 0, y: 20, scale: 0.85 });
+gsap.set('nav', { opacity: 0, y: -40 });
+gsap.set('.scroll-indicator', { opacity: 0 });
+
+// Cache nav element for morph calculations
+var navEl = document.querySelector('nav');
+var morphEl = document.getElementById('morph-square');
+
+// Set SVG transform-origin for each rotating square (center of viewBox)
+gsap.set('#rs-outer, #rs-glow', { svgOrigin: '150 150' });
+gsap.set('#rs-mid1', { svgOrigin: '150 150' });
+gsap.set('#rs-mid2', { svgOrigin: '150 150' });
+gsap.set('#rs-inner', { svgOrigin: '150 150' });
+
+// Start perpetual rotations (these run independently of the timeline)
+gsap.to('#rs-outer, #rs-glow', { rotation: 360, duration: 6, ease: 'none', repeat: -1 });
+gsap.to('#rs-mid1', { rotation: -360, duration: 4.5, ease: 'none', repeat: -1 });
+gsap.to('#rs-mid2', { rotation: 720, duration: 3, ease: 'none', repeat: -1 });
+gsap.to('#rs-inner', { rotation: -720, duration: 2, ease: 'none', repeat: -1 });
+
+var introTL = gsap.timeline({
+    onComplete: function() {
+        document.body.style.overflow = '';
+        var pl = document.getElementById('page-loader');
+        if (pl) pl.style.display = 'none';
+        if (morphEl) morphEl.style.display = 'none';
+        gsap.to('#scroll-progress', { opacity: 1, duration: 0.5 });
+        // After intro, refresh ScrollTrigger and force-play any triggers
+        // that the user has already scrolled past (mid-page reload fix)
+        setTimeout(function() {
+            ScrollTrigger.refresh(true);
+            // Force-fire all ScrollTriggers that are already past their start
+            ScrollTrigger.getAll().forEach(function(st) {
+                if (st.progress > 0 && st.animation && !st.animation.isActive()) {
+                    st.animation.progress(1).pause();
+                }
+            });
+        }, 100);
+        // Secondary fallback: brute-force reveal any still-hidden elements
+        setTimeout(function() {
+            document.querySelectorAll('#services *, #solutions *, #why-us *, #contact *, #partner-banner *, #stats-bar *, footer *').forEach(function(el) {
+                var op = parseFloat(getComputedStyle(el).opacity);
+                if (op < 0.05 && !el.classList.contains('page-loader') && !el.id?.startsWith('loader') && !el.id?.startsWith('morph') && !el.classList.contains('why-card')) {
+                    gsap.set(el, { opacity: 1, y: 0, x: 0, scale: 1, rotateX: 0, rotateY: 0, clearProps: 'transform' });
+                }
+            });
+        }, 800);
+    }
+});
+
+// ============================================================
+// PHASE 1: ROTATING SQUARES (reflektor-style) — ~2.5s
+// ============================================================
+introTL
+    // Ambient glow behind squares
+    .to('#loader-glow', { opacity: 1, duration: 0.6, ease: 'power2.out' })
+
+    // Squares fade in + draw strokes (staggered outer → inner)
+    .to('#rs-outer', { opacity: 0.9, strokeDashoffset: 0, duration: 1.2, ease: 'power2.inOut' }, '-=0.3')
+    .to('#rs-glow', { opacity: 1, duration: 0.8, ease: 'power2.out' }, '<')
+    .to('#rs-mid1', { opacity: 0.7, strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, '-=0.9')
+    .to('#rs-mid2', { opacity: 0.5, strokeDashoffset: 0, duration: 0.8, ease: 'power2.inOut' }, '-=0.7')
+    .to('#rs-inner', { opacity: 0.4, strokeDashoffset: 0, duration: 0.6, ease: 'power2.inOut' }, '-=0.5')
+
+    // Let them spin visibly for a moment
+    .to({}, { duration: 0.8 })
+
+    // Collapse: all squares scale down + speed up + converge to center
+    .to('#rs-outer', { attr: { x: 100, y: 100, width: 100, height: 100 }, opacity: 0.6, duration: 0.7, ease: 'power3.in' })
+    .to('#rs-mid1', { attr: { x: 100, y: 100, width: 100, height: 100 }, opacity: 0.5, duration: 0.6, ease: 'power3.in' }, '<+=0.05')
+    .to('#rs-mid2', { attr: { x: 100, y: 100, width: 100, height: 100 }, opacity: 0.4, duration: 0.5, ease: 'power3.in' }, '<+=0.05')
+    .to('#rs-inner', { attr: { x: 100, y: 100, width: 100, height: 100 }, opacity: 0.3, duration: 0.4, ease: 'power3.in' }, '<+=0.05')
+    .to('#rs-glow', { opacity: 0, duration: 0.4, ease: 'power2.in' }, '<')
+
+    // Flash at merge point
+    .to('#loader-glow', { opacity: 0.4, scale: 0.5, duration: 0.2, ease: 'power2.in' })
+
+    // Hide rotating squares SVG
+    .set('#loader-squares-svg', { opacity: 0 })
+
+// ============================================================
+// PHASE 2: LOGO REVEAL — Square draws, DEFT (white), SQUAD (orange) — ~2s
+// ============================================================
+    // Show logo SVG
+    .to('#loader-logo-svg', { opacity: 1, duration: 0.3, ease: 'power2.out' })
+
+    // Glow expands back
+    .to('#loader-glow', { opacity: 0.3, scale: 1, duration: 0.5, ease: 'power2.out' }, '<')
+
+    // Logo square draws itself
+    .to('#logo-square', { strokeDashoffset: 0, duration: 1.0, ease: 'power2.inOut' }, '-=0.2')
+
+    // Glow pulse on completion
+    .to('#logo-square-glow', { opacity: 1, duration: 0.25, ease: 'power2.out' }, '-=0.2')
+    .to('#logo-square-glow', { opacity: 0, duration: 0.5, ease: 'power2.in' })
+
+    // DEFT reveals — white, slides up
+    .to('#logo-deft', { opacity: 1, duration: 0.5, ease: 'power3.out' }, '-=0.4')
+
+    // SQUAD reveals — orange
+    .to('#logo-squad', { opacity: 1, duration: 0.4, ease: 'power3.out' }, '-=0.15')
+
+    // Hold to admire logo
+    .to({}, { duration: 0.6 })
+
+// ============================================================
+// PHASE 3: SQUARE MORPHS INTO NAV + HERO ENTRANCE — ~3s
+// ============================================================
+    // Fade out logo text
+    .to('#logo-deft, #logo-squad', { opacity: 0, duration: 0.3, ease: 'power2.in' })
+
+    // Calculate morph target: get the logo square's screen position and the nav's position
+    .call(function() {
+        // Get the logo square's bounding rect
+        var logoRect = document.getElementById('logo-square').getBoundingClientRect();
+        // Position the morph div exactly where the logo square is
+        morphEl.style.display = 'block';
+        morphEl.style.left = logoRect.left + 'px';
+        morphEl.style.top = logoRect.top + 'px';
+        morphEl.style.width = logoRect.width + 'px';
+        morphEl.style.height = logoRect.height + 'px';
+        morphEl.style.borderRadius = '0px';
+        morphEl.style.border = '2px solid rgba(246,115,0,0.5)';
+        morphEl.style.background = 'transparent';
+
+        // Hide the SVG logo now — morph div takes over
+        gsap.set('#loader-logo-svg', { opacity: 0 });
+        gsap.set('#loader-glow', { opacity: 0 });
+    })
+
+    // Morph: square → nav pill shape
+    .to('#morph-square', {
+        left: navEl ? navEl.getBoundingClientRect().left + 'px' : '5%',
+        top: navEl ? navEl.getBoundingClientRect().top + 'px' : '24px',
+        width: navEl ? navEl.getBoundingClientRect().width + 'px' : '90%',
+        height: navEl ? navEl.getBoundingClientRect().height + 'px' : '56px',
+        borderRadius: '9999px',
+        borderColor: 'rgba(120,113,108,0.5)',
+        background: 'rgba(12,10,9,0.6)',
+        duration: 0.9,
+        ease: 'power3.inOut'
+    })
+
+    // Add backdrop blur effect to morph element
+    .set('#morph-square', { backdropFilter: 'blur(16px)', webkitBackdropFilter: 'blur(16px)' })
+
+    // Hide loader overlay (reveal the page behind)
+    .to('#page-loader', { opacity: 0, duration: 0.4, ease: 'power2.out' }, '-=0.5')
+
+    // Swap: hide morph, show real nav (positioned identically)
+    .call(function() {
+        morphEl.style.display = 'none';
+    })
+    .to('nav', { opacity: 1, y: 0, duration: 0.01 })
+
+    // Nav inner content fades in
+    .fromTo('nav .flex > *', { opacity: 0, y: -10 }, {
+        opacity: 1, y: 0, duration: 0.4, ease: 'power2.out', stagger: 0.08
+    })
+
+    // Hero light burst flash
+    .to('#hero-light-burst', { opacity: 1, duration: 0.3, ease: 'power2.out' }, '-=0.3')
+    .to('#hero-light-burst', { opacity: 0, duration: 1.5, ease: 'power2.in' })
+
+    // Ribbon canvas fades in
+    .to('#ribbon-canvas', { opacity: 1, duration: 1.5, ease: 'power2.out' }, '-=1.8')
+
+    // Aurora fades in
+    .to('.aurora-core', { opacity: 1, duration: 1.5, ease: 'power2.out' }, '-=1.5')
+    .to('.aurora-halo', { opacity: 1, duration: 1.8, ease: 'power1.out' }, '<+=0.1')
+    .to('.aurora-rays, .aurora-rays-2', { opacity: 1, duration: 1.8, ease: 'power1.out', stagger: 0.1 }, '<+=0.2')
+    .to('.aurora-ambient-1, .aurora-ambient-2, .aurora-ambient-3', { opacity: 1, duration: 1.2, ease: 'power2.out', stagger: 0.15 }, '<+=0.2')
+
+    // Hero text staggers in
+    .to('.hero-stagger > *', {
+        opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.12
+    }, '-=1.2')
+
+    // Code panel sweeps in
+    .to('.hero-panel-enter', {
+        opacity: 1, x: 0, scale: 1, rotateY: 0, duration: 1.0, ease: 'power3.out'
+    }, '-=0.6')
+
+    // Code lines reveal
+    .to('.type-line', {
+        opacity: 1, x: 0, duration: 0.35, ease: 'power2.out', stagger: 0.08
+    }, '-=0.5')
+
+    // Status card pops
+    .to('.status-pop', {
+        opacity: 1, y: 0, scale: 1, duration: 0.6, ease: 'back.out(2)'
+    }, '-=0.1')
+
+    // Scroll indicator
+    .to('.scroll-indicator', { opacity: 1, duration: 0.5 }, '-=0.3');
+
+// =====================================================
+// 2. SCROLL PROGRESS BAR
+// =====================================================
+gsap.to('#scroll-progress', {
+    width: '100%',
+    ease: 'none',
+    scrollTrigger: {
+        trigger: document.documentElement,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.3
+    }
+});
+
+// =====================================================
+// 3. BACKGROUND GRADIENT SHIFT (scroll-linked)
+// =====================================================
+gsap.fromTo('#bg-gradient-shift',
+    { background: 'radial-gradient(ellipse at 50% 0%, rgba(246,115,0,0.03) 0%, transparent 50%)' },
+    {
+        background: 'radial-gradient(ellipse at 50% 100%, rgba(110,22,154,0.04) 0%, transparent 50%)',
+        ease: 'none',
+        scrollTrigger: {
+            trigger: document.documentElement,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 2
+        }
+    }
+);
+
+// =====================================================
+// 4. NAV SHRINK ON SCROLL (GSAP-powered)
+// =====================================================
+let navShrunk = false;
+ScrollTrigger.create({
+    start: 50,
+    onUpdate: (self) => {
+        if (self.scroll() > 50 && !navShrunk) {
+            navShrunk = true;
+            gsap.to('nav', { paddingTop: '0.25rem', paddingBottom: '0.25rem', width: '85%', duration: 0.4, ease: 'power2.out' });
+        } else if (self.scroll() <= 50 && navShrunk) {
+            navShrunk = false;
+            gsap.to('nav', { paddingTop: '0.75rem', paddingBottom: '0.75rem', width: '90%', duration: 0.4, ease: 'power2.out' });
+        }
+    }
+});
+
+// =====================================================
+// 5. AURORA SCROLL PARALLAX
+// =====================================================
+gsap.to('.aurora-core', {
+    y: -150,
+    scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 1.5 }
+});
+gsap.to('.aurora-halo', {
+    y: -80,
+    scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 1.5 }
+});
+gsap.to('.aurora-rays', {
+    y: -200, opacity: 0.5,
+    scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 2 }
+});
+gsap.to('.aurora-ambient-1', {
+    y: -100,
+    scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 1 }
+});
+gsap.to('.aurora-ambient-2', {
+    y: -60,
+    scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 1.2 }
+});
+gsap.to('.aurora-ambient-3', {
+    y: -130,
+    scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 0.8 }
+});
+
+// Hero content parallax
+gsap.to('.hero-stagger', {
+    y: -60,
+    scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 1 }
+});
+gsap.to('.hero-panel-enter', {
+    y: -30,
+    scrollTrigger: { trigger: '#home', start: 'top top', end: 'bottom top', scrub: 1.5 }
+});
+
+// =====================================================
+// 6. AURORA MOUSE PARALLAX (GPU-optimized with quickSetter)
+// =====================================================
+const heroEl = document.getElementById('home');
+const setCoreX = gsap.quickSetter('.aurora-core', 'x', 'px');
+const setCoreY = gsap.quickSetter('.aurora-core', 'y', 'px');
+const setRaysX = gsap.quickSetter('.aurora-rays', 'x', 'px');
+const setRays2X = gsap.quickSetter('.aurora-rays-2', 'x', 'px');
+let mX = 0, mY = 0, cX = 0, cY = 0;
+
+heroEl.addEventListener('mousemove', (e) => {
+    const rect = heroEl.getBoundingClientRect();
+    mX = (e.clientX - rect.left) / rect.width - 0.5;
+    mY = (e.clientY - rect.top) / rect.height - 0.5;
+});
+
+gsap.ticker.add(() => {
+    cX += (mX - cX) * 0.03;
+    cY += (mY - cY) * 0.03;
+    setCoreX(cX * 60);
+    setCoreY(cY * 30);
+    setRaysX(cX * 20);
+    setRays2X(cX * -15);
+});
+
+// =====================================================
+// 7. FLOATING PARTICLES
+// =====================================================
+const particleContainer = document.getElementById('aurora-particles');
+const MAX_PARTICLES = 25;
+function spawnParticle() {
+    if (particleContainer.children.length >= MAX_PARTICLES) return;
+    const p = document.createElement('div');
+    p.classList.add('aurora-particle');
+    const x = Math.random() * 100;
+    const size = Math.random() * 2 + 1;
+    const duration = Math.random() * 12 + 10;
+    const delay = Math.random() * 4;
+    const colors = ['rgba(249,219,154,0.5)', 'rgba(246,175,60,0.4)', 'rgba(246,115,0,0.3)', 'rgba(255,220,180,0.35)'];
+    const c = colors[Math.floor(Math.random() * colors.length)];
+    p.style.cssText = `left:${x}%;bottom:-5%;width:${size}px;height:${size}px;background:${c};animation-duration:${duration}s;animation-delay:${delay}s;box-shadow:0 0 ${size*3}px ${c};`;
+    particleContainer.appendChild(p);
+    setTimeout(() => p.remove(), (duration + delay) * 1000);
+}
+setInterval(spawnParticle, 700);
+for (let i = 0; i < 12; i++) setTimeout(spawnParticle, i * 150);
+
+// =====================================================
+// 8. GLOW DIVIDERS — scale from center
+// =====================================================
+gsap.utils.toArray('.glow-line').forEach(line => {
+    gsap.from(line, {
+        scaleX: 0,
+        transformOrigin: 'center center',
+        duration: 1.2,
+        ease: 'power2.out',
+        scrollTrigger: {
+            trigger: line,
+            start: 'top 90%',
+            toggleActions: 'play none none none'
+        }
+    });
+});
+
+// =====================================================
+// 9. STATS BAR — counter animation + stagger
+// =====================================================
+const statSection = document.getElementById('stats-bar');
+if (statSection) {
+    const statItems = statSection.querySelectorAll('.group');
+    gsap.from(statItems, {
+        y: 30, opacity: 0,
+        duration: 0.8, ease: 'power3.out', stagger: 0.15,
+        scrollTrigger: {
+            trigger: statSection,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+        }
+    });
+
+    // Counter count-up
+    document.querySelectorAll('.count-up').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        if (!target) return;
+        const obj = { val: 0 };
+        gsap.to(obj, {
+            val: target, duration: 2, ease: 'power1.out',
+            scrollTrigger: {
+                trigger: el, start: 'top 85%',
+                toggleActions: 'play none none none'
+            },
+            onUpdate: () => { el.textContent = Math.round(obj.val) + '+'; }
+        });
+    });
+}
+
+// =====================================================
+// 10. SERVICES SECTION — cinematic entrance + 3D tilt + idle float
+// =====================================================
+const servicesSection = document.getElementById('services');
+if (servicesSection) {
+    // Section eyebrow + divider
+    const eyebrow = servicesSection.querySelector('span');
+    const divider = servicesSection.querySelector('.bg-primary');
+    gsap.from([eyebrow, divider], {
+        opacity: 0, y: 20, duration: 0.6, ease: 'power2.out', stagger: 0.1,
+        scrollTrigger: { trigger: servicesSection, start: 'top 80%', toggleActions: 'play none none none' }
+    });
+
+    // Word-split heading
+    const serviceH2 = servicesSection.querySelector('h2');
+    if (serviceH2) {
+        const serviceWords = splitTextToSpans('#services h2');
+        gsap.from(serviceWords, {
+            y: '110%', duration: 0.8, ease: 'power4.out', stagger: 0.04,
+            scrollTrigger: { trigger: serviceH2, start: 'top 80%', toggleActions: 'play none none none' }
+        });
+    }
+
+    // --- A. CINEMATIC SCROLL ENTRANCE ---
+    const serviceCards = servicesSection.querySelectorAll('.glass-card');
+    const serviceGrid = servicesSection.querySelector('.grid');
+    if (serviceGrid) gsap.set(serviceGrid, { perspective: 1000 });
+
+    // Single timeline for all cards — staggered entrance
+    var entranceTL = gsap.timeline({
+        scrollTrigger: { trigger: serviceGrid, start: 'top 85%', toggleActions: 'play none none none' }
+    });
+
+    // Set initial hidden state
+    gsap.set(serviceCards, { y: 80, opacity: 0, scale: 0.85, rotationX: 25, transformOrigin: 'center bottom' });
+
+    // Stagger cards flipping in
+    entranceTL.to(serviceCards, {
+        y: 0, opacity: 1, scale: 1, rotationX: 0,
+        duration: 0.8, ease: 'power3.out',
+        stagger: 0.12,
+        onComplete: function() {
+            // After all cards are in, start idle float on each
+            serviceCards.forEach(function(card) {
+                gsap.to(card, {
+                    y: gsap.utils.random(-2, 2),
+                    duration: gsap.utils.random(3, 5),
+                    ease: 'sine.inOut',
+                    repeat: -1,
+                    yoyo: true,
+                    delay: gsap.utils.random(0, 1)
+                });
+            });
+        }
+    });
+
+    // Icons bounce in after their card lands
+    serviceCards.forEach(function(card, i) {
+        var icon = card.querySelector('.material-symbols-outlined');
+        if (icon) {
+            gsap.set(icon, { scale: 0, rotation: -20 });
+            entranceTL.fromTo(icon, { scale: 0, rotation: -20 }, {
+                scale: 1, rotation: 0, duration: 0.6, ease: 'elastic.out(1.2, 0.5)'
+            }, 0.12 * i + 0.4); // starts 0.4s after each card begins
+        }
+    });
+
+    // --- B. 3D MAGNETIC TILT ON HOVER ---
+    serviceCards.forEach(function(card) {
+        var qRotX = gsap.quickTo(card, 'rotationX', { duration: 0.4, ease: 'power2.out' });
+        var qRotY = gsap.quickTo(card, 'rotationY', { duration: 0.4, ease: 'power2.out' });
+        var qScale = gsap.quickTo(card, 'scale', { duration: 0.4, ease: 'power2.out' });
+        var glow = card.querySelector('.card-glow');
+
+        card.addEventListener('mousemove', function(e) {
+            var rect = card.getBoundingClientRect();
+            var x = (e.clientX - rect.left) / rect.width;  // 0 to 1
+            var y = (e.clientY - rect.top) / rect.height;   // 0 to 1
+            var tiltX = (0.5 - y) * 24;  // -12 to 12 degrees
+            var tiltY = (x - 0.5) * 24;  // -12 to 12 degrees
+
+            qRotX(tiltX);
+            qRotY(tiltY);
+            qScale(1.05);
+
+            // Move glow to cursor position
+            if (glow) {
+                glow.style.opacity = '1';
+                glow.style.setProperty('--mx', (x * 100) + '%');
+                glow.style.setProperty('--my', (y * 100) + '%');
+            }
+        });
+
+        card.addEventListener('mouseleave', function() {
+            qRotX(0);
+            qRotY(0);
+            qScale(1);
+            if (glow) glow.style.opacity = '0';
+        });
+    });
+}
+
+// =====================================================
+// 11. SOLUTIONS SECTION — directional reveals
+// =====================================================
+const solutionsSection = document.getElementById('solutions');
+if (solutionsSection) {
+    // Heading word reveal
+    const solH2 = solutionsSection.querySelector('h2');
+    if (solH2) {
+        const solWords = splitTextToSpans('#solutions h2');
+        gsap.from(solWords, {
+            y: '110%', duration: 0.8, ease: 'power4.out', stagger: 0.04,
+            scrollTrigger: { trigger: solH2, start: 'top 80%', toggleActions: 'play none none none' }
+        });
+    }
+
+    const solGrid = solutionsSection.querySelector('.grid');
+    if (solGrid) {
+        gsap.set(solGrid, { perspective: 1000 });
+        const solCards = solGrid.children;
+
+        // Large card (col-span-8) — from left
+        if (solCards[0]) {
+            gsap.from(solCards[0], {
+                x: -60, opacity: 0, duration: 0.7, ease: 'power3.out',
+                scrollTrigger: { trigger: solGrid, start: 'top 80%', toggleActions: 'play none none none' }
+            });
+        }
+        // Side card (first col-span-4) — from right
+        if (solCards[1]) {
+            gsap.from(solCards[1], {
+                x: 60, opacity: 0, duration: 0.7, ease: 'power3.out',
+                scrollTrigger: { trigger: solGrid, start: 'top 80%', toggleActions: 'play none none none' }
+            });
+        }
+        // Bottom 3 cards — stagger from below
+        const bottomCards = Array.from(solCards).slice(2);
+        if (bottomCards.length) {
+            gsap.from(bottomCards, {
+                y: 30, opacity: 0, rotationY: -4,
+                duration: 0.6, ease: 'power3.out', stagger: 0.1,
+                scrollTrigger: { trigger: bottomCards[0], start: 'top 85%', toggleActions: 'play none none none' }
+            });
+        }
+    }
+}
+
+// =====================================================
+// 12. WHY CHOOSE US — exact CodePen seamless loop + Draggable
+// =====================================================
+(function() {
+    var whyIteration = 0;
+
+    // Set initial state
+    gsap.set('.why-card', {xPercent: 400, opacity: 0, scale: 0});
+
+    var spacing = 0.1,
+        snapTime = gsap.utils.snap(spacing),
+        cards = gsap.utils.toArray('.why-card'),
+        animateFunc = function(element) {
+            var tl = gsap.timeline();
+            tl.fromTo(element, {scale: 0, opacity: 0}, {scale: 1, opacity: 1, zIndex: 100, duration: 0.5, yoyo: true, repeat: 1, ease: 'power1.in', immediateRender: false})
+              .fromTo(element, {xPercent: 400}, {xPercent: -400, duration: 1, ease: 'none', immediateRender: false}, 0);
+            return tl;
+        };
+
+    if (!cards.length) return;
+
+    function buildSeamlessLoop(items, sp, animate) {
+        var overlap = Math.ceil(1 / sp),
+            startTime = items.length * sp + 0.5,
+            loopTime = (items.length + overlap) * sp + 1,
+            rawSequence = gsap.timeline({paused: true}),
+            seamlessLoop = gsap.timeline({
+                paused: true,
+                repeat: -1,
+                onRepeat: function() {
+                    this._time === this._dur && (this._tTime += this._dur - 0.01);
+                }
+            }),
+            l = items.length + overlap * 2,
+            time, i, index;
+
+        for (i = 0; i < l; i++) {
+            index = i % items.length;
+            time = i * sp;
+            rawSequence.add(animate(items[index]), time);
+        }
+
+        rawSequence.time(startTime);
+        seamlessLoop.to(rawSequence, {
+            time: loopTime,
+            duration: loopTime - startTime,
+            ease: 'none'
+        }).fromTo(rawSequence, {time: overlap * sp + 1}, {
+            time: startTime,
+            duration: startTime - (overlap * sp + 1),
+            immediateRender: false,
+            ease: 'none'
+        });
+        return seamlessLoop;
+    }
+
+    var seamlessLoop = buildSeamlessLoop(cards, spacing, animateFunc),
+        playhead = {offset: 0},
+        wrapTime = gsap.utils.wrap(0, seamlessLoop.duration()),
+        scrub = gsap.to(playhead, {
+            offset: 0,
+            onUpdate: function() {
+                seamlessLoop.time(wrapTime(playhead.offset));
+            },
+            duration: 0.5,
+            ease: 'power3',
+            paused: true
+        });
+
+    // Button-driven navigation (no ScrollTrigger pin — just buttons + drag)
+    function scrollToOffset(offset) {
+        var snappedTime = snapTime(offset);
+        var progress = (snappedTime - seamlessLoop.duration() * whyIteration) / seamlessLoop.duration();
+        if (progress >= 1 || progress < 0) {
+            whyIteration += Math.floor(progress);
+            progress = progress - Math.floor(progress);
+        }
+        playhead.offset = (whyIteration + progress) * seamlessLoop.duration();
+        scrub.vars.offset = playhead.offset;
+        scrub.invalidate().restart();
+    }
+
+    // Prev / Next
+    document.getElementById('why-next').addEventListener('click', function() { scrollToOffset(scrub.vars.offset + spacing); });
+    document.getElementById('why-prev').addEventListener('click', function() { scrollToOffset(scrub.vars.offset - spacing); });
+
+    // Draggable (exact CodePen pattern)
+    Draggable.create('.why-drag-proxy', {
+        type: 'x',
+        trigger: '.why-cards',
+        onPress: function() {
+            this.startOffset = scrub.vars.offset;
+        },
+        onDrag: function() {
+            scrub.vars.offset = this.startOffset + (this.startX - this.x) * 0.001;
+            scrub.invalidate().restart();
+        },
+        onDragEnd: function() {
+            scrollToOffset(scrub.vars.offset);
+        }
+    });
+
+    // Auto-play every 3s
+    var autoTimer = setInterval(function() { scrollToOffset(scrub.vars.offset + spacing); }, 3000);
+    var gallery = document.querySelector('.why-gallery');
+    if (gallery) {
+        gallery.addEventListener('mouseenter', function() { clearInterval(autoTimer); });
+        gallery.addEventListener('mouseleave', function() { autoTimer = setInterval(function() { scrollToOffset(scrub.vars.offset + spacing); }, 3000); });
+    }
+
+    // Scroll-triggered entrance for the heading
+    var whyH2 = document.querySelector('#why-us h2');
+    if (whyH2) {
+        var whyWords = splitTextToSpans('#why-us h2');
+        gsap.from(whyWords, {
+            y: '110%', duration: 0.8, ease: 'power4.out', stagger: 0.06,
+            scrollTrigger: { trigger: whyH2, start: 'top 85%', toggleActions: 'play none none none' }
+        });
+    }
+    var whyP = document.querySelector('#why-us > div > div > p');
+    if (whyP) {
+        gsap.from(whyP, {
+            opacity: 0, y: 20, duration: 0.6, ease: 'power2.out',
+            scrollTrigger: { trigger: whyP, start: 'top 85%', toggleActions: 'play none none none' }
+        });
+    }
+})();
+
+// =====================================================
+// 13. PARTNER BANNER — scale in
+// =====================================================
+const partnerSection = document.getElementById('partner-banner');
+if (partnerSection) {
+    gsap.from(partnerSection.querySelector('img'), {
+        scale: 0.8, opacity: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: partnerSection, start: 'top 80%', toggleActions: 'play none none none' }
+    });
+    gsap.from(partnerSection.querySelector('h3'), {
+        opacity: 0, y: 15, duration: 0.6, ease: 'power2.out',
+        scrollTrigger: { trigger: partnerSection, start: 'top 80%', toggleActions: 'play none none none' }
+    });
+}
+
+// =====================================================
+// 14. CONTACT — split reveal
+// =====================================================
+const contactSection = document.getElementById('contact');
+if (contactSection) {
+    const contactGrid = contactSection.querySelector('.grid');
+    if (contactGrid) {
+        // Left info slides from left
+        gsap.from(contactGrid.children[0], {
+            x: -80, opacity: 0, duration: 1, ease: 'power3.out',
+            scrollTrigger: { trigger: contactSection, start: 'top 70%', toggleActions: 'play none none none' }
+        });
+        // Right form slides from right
+        gsap.from(contactGrid.children[1], {
+            x: 80, opacity: 0, duration: 1, ease: 'power3.out',
+            scrollTrigger: { trigger: contactSection, start: 'top 70%', toggleActions: 'play none none none' }
+        });
+    }
+    // Contact items stagger
+    const contactItems = contactSection.querySelectorAll('.flex.items-start');
+    gsap.from(contactItems, {
+        x: -30, opacity: 0, duration: 0.6, ease: 'power2.out', stagger: 0.15,
+        scrollTrigger: { trigger: contactItems[0], start: 'top 80%', toggleActions: 'play none none none' }
+    });
+}
+
+// =====================================================
+// 15. FOOTER — subtle rise
+// =====================================================
+gsap.from('footer', {
+    y: 30, opacity: 0, duration: 0.8, ease: 'power2.out',
+    scrollTrigger: { trigger: 'footer', start: 'top 90%', toggleActions: 'play none none none' }
+});
+
+// =====================================================
+// 16. SMOOTH SCROLL (GSAP ScrollToPlugin)
+// =====================================================
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            gsap.to(window, {
+                duration: 1.2,
+                scrollTo: { y: target, offsetY: 80 },
+                ease: 'power3.inOut'
+            });
+        }
+    });
+});
+</script>
+</body>
+</html>

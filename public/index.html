@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DEFTSQUAD // IT Consulting & Services</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#0a0a0f',
+            card: '#12121a',
+            muted: '#1c1c2e',
+            mutedFg: '#6b7280',
+            accent: '#00ff88',
+            accentSec: '#ff00ff',
+            accentTer: '#00d4ff',
+            border: '#2a2a3a',
+            destructive: '#ff3366',
+          },
+          fontFamily: {
+            heading: ['Orbitron', 'Share Tech Mono', 'monospace'],
+            body: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
+            label: ['Share Tech Mono', 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background: #0a0a0f;
+      color: #e0e0e0;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    /* Scanline overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Circuit grid background */
+    .circuit-bg {
+      background-image:
+        linear-gradient(rgba(0, 255, 136, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 136, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    /* Chamfered corners */
+    .cyber-chamfer {
+      clip-path: polygon(
+        0 12px, 12px 0,
+        calc(100% - 12px) 0, 100% 12px,
+        100% calc(100% - 12px), calc(100% - 12px) 100%,
+        12px 100%, 0 calc(100% - 12px)
+      );
+    }
+    .cyber-chamfer-sm {
+      clip-path: polygon(
+        0 6px, 6px 0,
+        calc(100% - 6px) 0, 100% 6px,
+        100% calc(100% - 6px), calc(100% - 6px) 100%,
+        6px 100%, 0 calc(100% - 6px)
+      );
+    }
+
+    /* Glitch headline */
+    .cyber-glitch {
+      position: relative;
+      animation: glitch 3s infinite;
+    }
+    .cyber-glitch::before,
+    .cyber-glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .cyber-glitch::before {
+      color: #ff00ff;
+      z-index: -1;
+      animation: glitch-chromatic 3s infinite;
+      clip-path: inset(0 0 60% 0);
+    }
+    .cyber-glitch::after {
+      color: #00d4ff;
+      z-index: -1;
+      animation: glitch-chromatic-2 3s infinite;
+      clip-path: inset(40% 0 0 0);
+    }
+
+    @keyframes glitch {
+      0%, 92%, 100% { transform: translate(0); }
+      93% { transform: translate(-3px, 2px); }
+      94% { transform: translate(3px, -1px); }
+      95% { transform: translate(-1px, -2px); }
+      96% { transform: translate(2px, 1px); }
+    }
+    @keyframes glitch-chromatic {
+      0%, 92%, 100% { transform: translate(0); }
+      93% { transform: translate(-4px, 1px); }
+      95% { transform: translate(3px, -2px); }
+      96% { transform: translate(-2px, 3px); }
+    }
+    @keyframes glitch-chromatic-2 {
+      0%, 92%, 100% { transform: translate(0); }
+      93% { transform: translate(4px, -1px); }
+      95% { transform: translate(-3px, 2px); }
+      96% { transform: translate(2px, -3px); }
+    }
+
+    /* Blink cursor */
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .cursor-blink::after {
+      content: '_';
+      animation: blink 1s step-end infinite;
+      color: #00ff88;
+    }
+
+    /* RGB shift pulse for headings */
+    @keyframes rgbShift {
+      0%, 100% { text-shadow: -2px 0 #ff00ff, 2px 0 #00d4ff; }
+      50% { text-shadow: 2px 0 #ff00ff, -2px 0 #00d4ff; }
+    }
+
+    /* Neon glow shadows */
+    .neon-glow { box-shadow: 0 0 5px #00ff88, 0 0 10px rgba(0,255,136,0.25); }
+    .neon-glow-lg { box-shadow: 0 0 10px #00ff88, 0 0 20px rgba(0,255,136,0.37), 0 0 40px rgba(0,255,136,0.18); }
+    .neon-glow-sec { box-shadow: 0 0 5px #ff00ff, 0 0 20px rgba(255,0,255,0.37); }
+    .neon-glow-ter { box-shadow: 0 0 5px #00d4ff, 0 0 20px rgba(0,212,255,0.37); }
+    .text-glow { text-shadow: 0 0 10px rgba(0,255,136,0.5); }
+    .text-glow-sec { text-shadow: 0 0 10px rgba(255,0,255,0.5); }
+    .text-glow-ter { text-shadow: 0 0 10px rgba(0,212,255,0.5); }
+
+    /* Smooth scroll targets */
+    section { scroll-margin-top: 80px; }
+
+    /* Hover card lift */
+    .card-hover {
+      transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      border-color: #00ff88;
+      box-shadow: 0 0 5px #00ff88, 0 0 10px rgba(0,255,136,0.25);
+    }
+
+    /* Terminal header dots */
+    .terminal-dots::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      width: 8px;
+      height: 8px;
+      background: #ff3366;
+      border-radius: 50%;
+      box-shadow: 14px 0 0 #ffaa00, 28px 0 0 #00ff88;
+    }
+
+    /* Gradient border animation */
+    @keyframes borderGlow {
+      0%, 100% { border-color: #00ff88; }
+      33% { border-color: #ff00ff; }
+      66% { border-color: #00d4ff; }
+    }
+    .border-anim { animation: borderGlow 6s ease-in-out infinite; }
+
+    /* Float animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    .float-anim { animation: float 4s ease-in-out infinite; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .cyber-glitch, .cyber-glitch::before, .cyber-glitch::after,
+      .cursor-blink::after, .border-anim, .float-anim {
+        animation: none !important;
+      }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0a0a0f; }
+    ::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #00ff88; }
+
+    /* Nav active link underline */
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #00ff88;
+      box-shadow: 0 0 4px #00ff88;
+      transition: width 200ms;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* HUD corner brackets */
+    .hud-corners {
+      position: relative;
+    }
+    .hud-corners::before,
+    .hud-corners::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgba(0,255,136,0.4);
+    }
+    .hud-corners::before {
+      top: -1px;
+      left: -1px;
+      border-right: none;
+      border-bottom: none;
+    }
+    .hud-corners::after {
+      bottom: -1px;
+      right: -1px;
+      border-left: none;
+      border-top: none;
+    }
+
+    /* Noise texture overlay */
+    .noise-overlay {
+      position: relative;
+    }
+    .noise-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body class="circuit-bg min-h-screen antialiased">
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-bg/90 backdrop-blur-md border-b border-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Logo -->
+        <a href="#hero" class="flex items-center gap-2">
+          <div class="border border-accent px-3 py-1 cyber-chamfer-sm">
+            <span class="font-heading text-accent font-bold text-sm tracking-[0.3em] text-glow">DEFTSQUAD</span>
+          </div>
+        </a>
+
+        <!-- Desktop Nav -->
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="#hero" class="nav-link font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent transition-colors">Home</a>
+          <a href="#services" class="nav-link font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent transition-colors">Services</a>
+          <a href="#solutions" class="nav-link font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent transition-colors">Solutions</a>
+          <a href="#why-us" class="nav-link font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent transition-colors">Why Us</a>
+          <a href="#contact" class="nav-link font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent transition-colors">Contact</a>
+        </div>
+
+        <!-- CTA + Mobile Toggle -->
+        <div class="flex items-center gap-4">
+          <a href="#contact" class="hidden sm:block font-label text-xs uppercase tracking-[0.2em] border-2 border-accent text-accent px-5 py-2 cyber-chamfer-sm hover:bg-accent hover:text-bg transition-all neon-glow">
+            Get Started
+          </a>
+          <!-- Mobile menu button -->
+          <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="lg:hidden text-accent p-2">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-bg/95 backdrop-blur-md border-t border-border">
+      <div class="px-4 py-4 space-y-3">
+        <a href="#hero" class="block font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent py-2">Home</a>
+        <a href="#services" class="block font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent py-2">Services</a>
+        <a href="#solutions" class="block font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent py-2">Solutions</a>
+        <a href="#why-us" class="block font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent py-2">Why Us</a>
+        <a href="#contact" class="block font-label text-xs uppercase tracking-[0.2em] text-mutedFg hover:text-accent py-2">Contact</a>
+        <a href="#contact" class="block font-label text-xs uppercase tracking-[0.2em] border-2 border-accent text-accent px-5 py-2 text-center cyber-chamfer-sm hover:bg-accent hover:text-bg transition-all mt-3">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ===================== HERO ===================== -->
+  <section id="hero" class="relative min-h-screen flex items-center overflow-hidden pt-16">
+    <!-- Background gradient meshes -->
+    <div class="absolute inset-0">
+      <div class="absolute top-1/4 -left-32 w-96 h-96 bg-accent/5 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-1/4 right-0 w-80 h-80 bg-accentSec/5 rounded-full blur-3xl"></div>
+      <div class="absolute top-0 right-1/3 w-64 h-64 bg-accentTer/3 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+      <div class="grid lg:grid-cols-5 gap-12 items-center">
+        <!-- Left (60%) -->
+        <div class="lg:col-span-3 space-y-8">
+          <!-- Terminal prefix -->
+          <div class="flex items-center gap-2">
+            <span class="font-label text-xs uppercase tracking-[0.3em] text-accentTer text-glow-ter">root@deftsquad:~$</span>
+            <span class="font-label text-xs text-mutedFg cursor-blink">initializing_systems</span>
+          </div>
+
+          <h1 class="font-heading text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-wide sm:tracking-widest leading-none">
+            <span class="cyber-glitch text-glow" data-text="IT">IT</span><br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent via-accentTer to-accentSec" style="filter: drop-shadow(0 0 20px rgba(0,255,136,0.3));">Consulting</span><br>
+            <span class="text-accent text-glow">&</span>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-accentSec to-accentTer" style="filter: drop-shadow(0 0 20px rgba(255,0,255,0.3));">Services</span>
+          </h1>
+
+          <p class="text-mutedFg text-base md:text-lg tracking-wide leading-relaxed max-w-xl">
+            <span class="text-accent">></span> We offer professional guidance and actionable solutions to businesses experiencing issues and provide skilled professionals who can help to create a software application and maintain it for your organization.
+          </p>
+
+          <div class="flex flex-wrap gap-4 pt-4">
+            <a href="#services" class="inline-block font-label text-sm uppercase tracking-[0.2em] bg-accent text-bg px-8 py-3 cyber-chamfer-sm font-bold hover:brightness-110 transition-all neon-glow-lg">
+              Explore Services
+            </a>
+            <a href="#contact" class="inline-block font-label text-sm uppercase tracking-[0.2em] border-2 border-accentSec text-accentSec px-8 py-3 cyber-chamfer-sm hover:bg-accentSec hover:text-bg transition-all">
+              Contact Us
+            </a>
+          </div>
+        </div>
+
+        <!-- Right (40%) - HUD Panel -->
+        <div class="hidden lg:block lg:col-span-2">
+          <div class="relative">
+            <!-- Main HUD card -->
+            <div class="border border-accent/30 bg-muted/30 backdrop-blur-sm p-6 hud-corners float-anim" style="box-shadow: 0 0 10px rgba(0,255,136,0.15), 0 0 40px rgba(0,255,136,0.05);">
+              <div class="space-y-4">
+                <div class="flex items-center justify-between border-b border-border pb-3">
+                  <span class="font-label text-xs uppercase tracking-[0.2em] text-accentTer">System Status</span>
+                  <span class="w-2 h-2 bg-accent rounded-full animate-pulse"></span>
+                </div>
+                <div class="space-y-3 font-body text-xs">
+                  <div class="flex justify-between">
+                    <span class="text-mutedFg">cloud_services</span>
+                    <span class="text-accent">ONLINE</span>
+                  </div>
+                  <div class="w-full bg-border h-1"><div class="bg-accent h-1 w-[92%]"></div></div>
+                  <div class="flex justify-between">
+                    <span class="text-mutedFg">security_protocol</span>
+                    <span class="text-accent">ACTIVE</span>
+                  </div>
+                  <div class="w-full bg-border h-1"><div class="bg-accentSec h-1 w-[88%]"></div></div>
+                  <div class="flex justify-between">
+                    <span class="text-mutedFg">network_uptime</span>
+                    <span class="text-accentTer">99.9%</span>
+                  </div>
+                  <div class="w-full bg-border h-1"><div class="bg-accentTer h-1 w-[99%]"></div></div>
+                  <div class="flex justify-between">
+                    <span class="text-mutedFg">client_satisfaction</span>
+                    <span class="text-accent">OPTIMAL</span>
+                  </div>
+                  <div class="w-full bg-border h-1"><div class="bg-accent h-1 w-[97%]"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Floating badge -->
+            <div class="absolute -bottom-6 -left-6 border border-accentSec/40 bg-card/80 backdrop-blur-sm px-4 py-2 cyber-chamfer-sm" style="box-shadow: 0 0 8px rgba(255,0,255,0.2);">
+              <span class="font-label text-xs text-accentSec uppercase tracking-[0.2em]">Google Cloud Partner</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2">
+      <div class="flex flex-col items-center gap-2 animate-bounce">
+        <span class="font-label text-[10px] uppercase tracking-[0.3em] text-mutedFg">Scroll</span>
+        <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== STATS BAR ===================== -->
+  <section class="relative border-y border-border bg-card/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 lg:grid-cols-4 divide-x divide-border">
+        <div class="py-8 px-6 text-center">
+          <div class="font-heading text-3xl md:text-4xl font-bold text-accent text-glow">6+</div>
+          <div class="font-label text-xs uppercase tracking-[0.2em] text-mutedFg mt-2">Core Services</div>
+        </div>
+        <div class="py-8 px-6 text-center">
+          <div class="font-heading text-3xl md:text-4xl font-bold text-accentTer text-glow-ter">99.9%</div>
+          <div class="font-label text-xs uppercase tracking-[0.2em] text-mutedFg mt-2">Uptime SLA</div>
+        </div>
+        <div class="py-8 px-6 text-center border-t lg:border-t-0 border-border">
+          <div class="font-heading text-3xl md:text-4xl font-bold text-accentSec text-glow-sec">24/7</div>
+          <div class="font-label text-xs uppercase tracking-[0.2em] text-mutedFg mt-2">Support</div>
+        </div>
+        <div class="py-8 px-6 text-center border-t lg:border-t-0 border-border">
+          <div class="font-heading text-3xl md:text-4xl font-bold text-accent text-glow">GCP</div>
+          <div class="font-label text-xs uppercase tracking-[0.2em] text-mutedFg mt-2">Cloud Partner</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== DEVELOPMENT SERVICES ===================== -->
+  <section id="services" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
+      <div class="mb-16">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-accentSec text-glow-sec">// 01</span>
+        <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase tracking-wide mt-4" style="text-shadow: -1px 0 #ff00ff40, 1px 0 #00d4ff40;">
+          Our <span class="text-accent text-glow">Services</span>
+        </h2>
+        <p class="text-mutedFg mt-4 max-w-2xl tracking-wide leading-relaxed">
+          <span class="text-accent">></span> Cutting-edge development and cloud-native solutions engineered for your business
+        </p>
+      </div>
+
+      <!-- Service cards grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" style="transform: skewY(-1deg);">
+
+        <!-- Card 1: Cloud Native Development -->
+        <div class="card-hover border border-border bg-card cyber-chamfer p-6 relative" style="transform: skewY(1deg);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 border border-accent/40 flex items-center justify-center cyber-chamfer-sm">
+              <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/></svg>
+            </div>
+            <span class="font-label text-xs text-mutedFg uppercase tracking-[0.2em]">srv_001</span>
+          </div>
+          <h3 class="font-heading text-lg font-semibold uppercase tracking-wide text-accent mb-3">Cloud Native Development</h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Applications designed to reside in the cloud involve cloud technologies like Microservices, CI/CD, Infrastructure as Code and DevSecOps.</p>
+        </div>
+
+        <!-- Card 2: Cloud Migration -->
+        <div class="card-hover border border-border bg-card cyber-chamfer p-6 relative" style="transform: skewY(1deg);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 border border-accentTer/40 flex items-center justify-center cyber-chamfer-sm">
+              <svg class="w-5 h-5 text-accentTer" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+            </div>
+            <span class="font-label text-xs text-mutedFg uppercase tracking-[0.2em]">srv_002</span>
+          </div>
+          <h3 class="font-heading text-lg font-semibold uppercase tracking-wide text-accentTer mb-3">Cloud Migration</h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Access, plan and execute cloud migration between on-premises-to-cloud and cloud-to-cloud services.</p>
+        </div>
+
+        <!-- Card 3: Cloud Optimization -->
+        <div class="card-hover border border-border bg-card cyber-chamfer p-6 relative" style="transform: skewY(1deg);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 border border-accentSec/40 flex items-center justify-center cyber-chamfer-sm">
+              <svg class="w-5 h-5 text-accentSec" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <span class="font-label text-xs text-mutedFg uppercase tracking-[0.2em]">srv_003</span>
+          </div>
+          <h3 class="font-heading text-lg font-semibold uppercase tracking-wide text-accentSec mb-3">Cloud Optimization</h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Analyzing the right resource as per your application needs to eliminate resource wastage.</p>
+        </div>
+
+        <!-- Card 4: Microservices -->
+        <div class="card-hover border border-border bg-card cyber-chamfer p-6 relative" style="transform: skewY(1deg);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 border border-accent/40 flex items-center justify-center cyber-chamfer-sm">
+              <svg class="w-5 h-5 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zm10 0a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/></svg>
+            </div>
+            <span class="font-label text-xs text-mutedFg uppercase tracking-[0.2em]">srv_004</span>
+          </div>
+          <h3 class="font-heading text-lg font-semibold uppercase tracking-wide text-accent mb-3">Microservices</h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">A set of fine-grained services communicate with each other over well-defined APIs.</p>
+        </div>
+
+        <!-- Card 5: Micro Frontend -->
+        <div class="card-hover border border-border bg-card cyber-chamfer p-6 relative" style="transform: skewY(1deg);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 border border-accentTer/40 flex items-center justify-center cyber-chamfer-sm">
+              <svg class="w-5 h-5 text-accentTer" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="font-label text-xs text-mutedFg uppercase tracking-[0.2em]">srv_005</span>
+          </div>
+          <h3 class="font-heading text-lg font-semibold uppercase tracking-wide text-accentTer mb-3">Micro Frontend</h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Decomposing front-end application into small individual micro applications works loosely together.</p>
+        </div>
+
+        <!-- Card 6: Mobile Development -->
+        <div class="card-hover border border-border bg-card cyber-chamfer p-6 relative" style="transform: skewY(1deg);">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 border border-accentSec/40 flex items-center justify-center cyber-chamfer-sm">
+              <svg class="w-5 h-5 text-accentSec" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+            </div>
+            <span class="font-label text-xs text-mutedFg uppercase tracking-[0.2em]">srv_006</span>
+          </div>
+          <h3 class="font-heading text-lg font-semibold uppercase tracking-wide text-accentSec mb-3">Mobile Development</h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Design and develop a software application in both Apple and Android to fulfill your business needs.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== IT SOLUTIONS ===================== -->
+  <section id="solutions" class="relative py-24 md:py-32 overflow-hidden">
+    <!-- Background accent -->
+    <div class="absolute inset-0">
+      <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-accentTer/3 rounded-full blur-3xl"></div>
+      <div class="absolute top-1/3 right-0 w-80 h-80 bg-accentSec/3 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <!-- Section header -->
+      <div class="mb-16 text-right">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-accentTer text-glow-ter">// 02</span>
+        <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase tracking-wide mt-4" style="text-shadow: -1px 0 #ff00ff40, 1px 0 #00d4ff40;">
+          IT <span class="text-accentSec text-glow-sec">Solutions</span>
+        </h2>
+        <p class="text-mutedFg mt-4 tracking-wide leading-relaxed">
+          Enterprise-grade infrastructure and managed services <span class="text-accentTer">_</span>
+        </p>
+      </div>
+
+      <!-- Terminal-style solution cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Cloud Solutions -->
+        <div class="card-hover border border-border bg-bg relative cyber-chamfer terminal-dots pt-10 pb-6 px-6">
+          <div class="absolute top-0 left-0 right-0 h-8 bg-card/50 border-b border-border"></div>
+          <h3 class="font-heading text-base font-semibold uppercase tracking-wide text-accent mb-3">
+            <span class="text-mutedFg">$</span> Cloud Solutions
+          </h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Our Cloud Solutions provide businesses with the ability to store, access, and manage their data securely in the cloud. Scalable, cost-effective, and secure.</p>
+        </div>
+
+        <!-- Managed IT Services -->
+        <div class="card-hover border border-border bg-bg relative cyber-chamfer terminal-dots pt-10 pb-6 px-6">
+          <div class="absolute top-0 left-0 right-0 h-8 bg-card/50 border-b border-border"></div>
+          <h3 class="font-heading text-base font-semibold uppercase tracking-wide text-accentTer mb-3">
+            <span class="text-mutedFg">$</span> Managed IT Services
+          </h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Reliable IT support with proactive monitoring and maintenance of networks and systems. We ensure your systems remain secure, up-to-date, and running optimally.</p>
+        </div>
+
+        <!-- Disaster Recovery -->
+        <div class="card-hover border border-border bg-bg relative cyber-chamfer terminal-dots pt-10 pb-6 px-6">
+          <div class="absolute top-0 left-0 right-0 h-8 bg-card/50 border-b border-border"></div>
+          <h3 class="font-heading text-base font-semibold uppercase tracking-wide text-accentSec mb-3">
+            <span class="text-mutedFg">$</span> Disaster Recovery
+          </h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Comprehensive protection utilizing the latest technology to ensure your data and systems are safe. Tailored plans for peace of mind in the face of disaster.</p>
+        </div>
+
+        <!-- Cloud Desktop -->
+        <div class="card-hover border border-border bg-bg relative cyber-chamfer terminal-dots pt-10 pb-6 px-6">
+          <div class="absolute top-0 left-0 right-0 h-8 bg-card/50 border-b border-border"></div>
+          <h3 class="font-heading text-base font-semibold uppercase tracking-wide text-accent mb-3">
+            <span class="text-mutedFg">$</span> Cloud Desktop
+          </h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Securely store data and access your desktop and applications from any device. A cost-effective, secure and reliable way to work from anywhere in the world.</p>
+        </div>
+
+        <!-- Network Solutions -->
+        <div class="card-hover border border-border bg-bg relative cyber-chamfer terminal-dots pt-10 pb-6 px-6">
+          <div class="absolute top-0 left-0 right-0 h-8 bg-card/50 border-b border-border"></div>
+          <h3 class="font-heading text-base font-semibold uppercase tracking-wide text-accentTer mb-3">
+            <span class="text-mutedFg">$</span> Network Solutions
+          </h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Comprehensive network solutions for businesses of all sizes. Certified professionals design, manage, and implement secure, reliable networks tailored to your needs.</p>
+        </div>
+
+        <!-- Support Consulting -->
+        <div class="card-hover border border-border bg-bg relative cyber-chamfer terminal-dots pt-10 pb-6 px-6">
+          <div class="absolute top-0 left-0 right-0 h-8 bg-card/50 border-b border-border"></div>
+          <h3 class="font-heading text-base font-semibold uppercase tracking-wide text-accentSec mb-3">
+            <span class="text-mutedFg">$</span> Support Consulting
+          </h3>
+          <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Expert advice and guidance to help businesses maximize their IT investments. Tailored solutions to ensure your business takes full advantage of the latest technology.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== WHY CHOOSE US ===================== -->
+  <section id="why-us" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-muted/20 to-transparent"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <!-- Section header -->
+      <div class="text-center mb-20">
+        <span class="font-label text-xs uppercase tracking-[0.3em] text-accent text-glow">// 03</span>
+        <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase tracking-wide mt-4">
+          Why Choose<br>
+          <span class="cyber-glitch text-accent text-glow" data-text="DEFTSQUAD?">DEFTSQUAD?</span>
+        </h2>
+      </div>
+
+      <!-- Reasons - Alternating layout -->
+      <div class="space-y-12">
+
+        <!-- 01. Customer First -->
+        <div class="grid md:grid-cols-12 gap-6 items-center">
+          <div class="md:col-span-2 flex md:justify-end">
+            <span class="font-heading text-6xl font-black text-accent/10" style="text-shadow: 0 0 30px rgba(0,255,136,0.1);">01</span>
+          </div>
+          <div class="md:col-span-10">
+            <div class="border border-border bg-card/50 p-6 md:p-8 cyber-chamfer hud-corners card-hover">
+              <h3 class="font-heading text-xl font-semibold uppercase tracking-wide text-accent mb-4">Customer First</h3>
+              <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Customers come first is a fundamental value of our organisation. We endeavour to comprehend our clients' needs and provide solutions that meet or exceed them. We communicate clearly, establish long-term relationships, and provide ongoing support after project completion.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02. Security -->
+        <div class="grid md:grid-cols-12 gap-6 items-center">
+          <div class="md:col-span-2 flex md:justify-end">
+            <span class="font-heading text-6xl font-black text-accentSec/10" style="text-shadow: 0 0 30px rgba(255,0,255,0.1);">02</span>
+          </div>
+          <div class="md:col-span-10">
+            <div class="border border-border bg-card/50 p-6 md:p-8 cyber-chamfer hud-corners card-hover">
+              <h3 class="font-heading text-xl font-semibold uppercase tracking-wide text-accentSec mb-4">Security</h3>
+              <p class="text-mutedFg text-sm leading-relaxed tracking-wide">Security is among our top priorities. We adhere to the software industry's best practices and standards to ensure code is secure, dependable, and maintainable. We employ encryption, authentication, authorization, and auditing methods to protect your data.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03. Solution with Passion -->
+        <div class="grid md:grid-cols-12 gap-6 items-center">
+          <div class="md:col-span-2 flex md:justify-end">
+            <span class="font-heading text-6xl font-black text-accentTer/10" style="text-shadow: 0 0 30px rgba(0,212,255,0.1);">03</span>
+          </div>
+          <div class="md:col-span-10">
+            <div class="border border-border bg-card/50 p-6 md:p-8 cyber-chamfer hud-corners card-hover">
+              <h3 class="font-heading text-xl font-semibold uppercase tracking-wide text-accentTer mb-4">Solution with Passion</h3>
+              <p class="text-mutedFg text-sm leading-relaxed tracking-wide">We are devoted to delivering high-quality IT solutions with enthusiasm and diligence. Our team of skilled and experienced IT professionals can manage any project, from web development to cloud computing, with efficiency and imagination.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04. Timely Delivery -->
+        <div class="grid md:grid-cols-12 gap-6 items-center">
+          <div class="md:col-span-2 flex md:justify-end">
+            <span class="font-heading text-6xl font-black text-accent/10" style="text-shadow: 0 0 30px rgba(0,255,136,0.1);">04</span>
+          </div>
+          <div class="md:col-span-10">
+            <div class="border border-border bg-card/50 p-6 md:p-8 cyber-chamfer hud-corners card-hover">
+              <h3 class="font-heading text-xl font-semibold uppercase tracking-wide text-accent mb-4">Timely Delivery within Budget</h3>
+              <p class="text-mutedFg text-sm leading-relaxed tracking-wide">We have a proven methodology that ensures every stage of the project is planned, executed and monitored with precision and efficiency. Our team is committed to delivering high-quality results that meet or surpass the agreed scope, schedule and budget.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 05. Scalable Solutions -->
+        <div class="grid md:grid-cols-12 gap-6 items-center">
+          <div class="md:col-span-2 flex md:justify-end">
+            <span class="font-heading text-6xl font-black text-accentSec/10" style="text-shadow: 0 0 30px rgba(255,0,255,0.1);">05</span>
+          </div>
+          <div class="md:col-span-10">
+            <div class="border border-border bg-card/50 p-6 md:p-8 cyber-chamfer hud-corners card-hover">
+              <h3 class="font-heading text-xl font-semibold uppercase tracking-wide text-accentSec mb-4">Scalable Solutions</h3>
+              <p class="text-mutedFg text-sm leading-relaxed tracking-wide">We provide cloud consulting, migration, development, management, and security services. We have expertise in Azure, AWS, Google Cloud Platform, and IBM Cloud. We can help you design, build, deploy, and manage your cloud applications and infrastructure.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== PARTNER ===================== -->
+  <section class="relative py-16 border-y border-border bg-card/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-center gap-8">
+        <span class="font-heading text-2xl md:text-3xl font-bold uppercase tracking-wide text-accentTer text-glow-ter">Partner</span>
+        <div class="border border-border bg-bg/50 px-8 py-4 cyber-chamfer flex items-center gap-4 card-hover">
+          <!-- Google Cloud icon approximation -->
+          <div class="relative flex items-center gap-1">
+            <svg class="w-10 h-10" viewBox="0 0 48 48" fill="none">
+              <path d="M24 4L6 14v20l18 10 18-10V14L24 4z" fill="none" stroke="#00d4ff" stroke-width="1.5" opacity="0.6"/>
+              <circle cx="24" cy="24" r="8" fill="none" stroke="#00ff88" stroke-width="2"/>
+              <path d="M24 16v16M16 24h16" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="font-heading text-lg font-bold uppercase tracking-wide text-[#e0e0e0]">Google Cloud</div>
+            <div class="font-label text-xs uppercase tracking-[0.2em] text-accent text-glow">Partner</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact" class="relative py-24 md:py-32 overflow-hidden">
+    <div class="absolute inset-0">
+      <div class="absolute top-1/4 left-0 w-96 h-96 bg-accentSec/3 rounded-full blur-3xl"></div>
+      <div class="absolute bottom-0 right-1/4 w-80 h-80 bg-accent/3 rounded-full blur-3xl"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16">
+        <!-- Left: Info -->
+        <div class="space-y-8">
+          <div>
+            <span class="font-label text-xs uppercase tracking-[0.3em] text-accentSec text-glow-sec">// 04</span>
+            <h2 class="font-heading text-4xl md:text-5xl font-bold uppercase tracking-wide mt-4">
+              Contact <span class="text-accent text-glow">Us</span>
+            </h2>
+            <p class="text-mutedFg mt-4 tracking-wide leading-relaxed">
+              <span class="text-accent">></span> Ready to upgrade your technology infrastructure? Get in touch with our team of experts.
+            </p>
+          </div>
+
+          <!-- Contact details - terminal style -->
+          <div class="border border-border bg-bg p-6 cyber-chamfer relative terminal-dots">
+            <div class="absolute top-0 left-0 right-0 h-8 bg-card/50 border-b border-border"></div>
+            <div class="pt-6 space-y-4 font-body text-sm">
+              <div>
+                <span class="text-accent">$</span> <span class="text-mutedFg">cat</span> <span class="text-accentTer">location.txt</span>
+                <div class="text-[#e0e0e0] mt-1 pl-4">5005 W Royal Ln Suite 183k,<br>Irving, TX 75063</div>
+              </div>
+              <div>
+                <span class="text-accent">$</span> <span class="text-mutedFg">echo</span> <span class="text-accentTer">$PHONE</span>
+                <div class="text-[#e0e0e0] mt-1 pl-4">+1 469.599.4789</div>
+              </div>
+              <div>
+                <span class="text-accent">$</span> <span class="text-mutedFg">echo</span> <span class="text-accentTer">$EMAIL</span>
+                <div class="text-[#e0e0e0] mt-1 pl-4">info@deftsquad.com</div>
+              </div>
+              <div class="text-mutedFg cursor-blink">
+                <span class="text-accent">$</span> _
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Form -->
+        <div>
+          <div class="border border-accent/30 bg-muted/30 backdrop-blur-sm p-8 hud-corners" style="box-shadow: 0 0 10px rgba(0,255,136,0.1), 0 0 40px rgba(0,255,136,0.03);">
+            <form class="space-y-6" onsubmit="event.preventDefault();">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label class="font-label text-xs uppercase tracking-[0.2em] text-mutedFg mb-2 block">First Name *</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-accent font-body text-sm">></span>
+                    <input type="text" required class="w-full bg-card border border-border text-accent font-body text-sm pl-8 pr-4 py-3 cyber-chamfer-sm focus:border-accent focus:outline-none transition-all" style="box-shadow: none;" onfocus="this.style.boxShadow='0 0 5px #00ff88, 0 0 10px rgba(0,255,136,0.25)'" onblur="this.style.boxShadow='none'" placeholder="john">
+                  </div>
+                </div>
+                <div>
+                  <label class="font-label text-xs uppercase tracking-[0.2em] text-mutedFg mb-2 block">Last Name *</label>
+                  <div class="relative">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-accent font-body text-sm">></span>
+                    <input type="text" required class="w-full bg-card border border-border text-accent font-body text-sm pl-8 pr-4 py-3 cyber-chamfer-sm focus:border-accent focus:outline-none transition-all" style="box-shadow: none;" onfocus="this.style.boxShadow='0 0 5px #00ff88, 0 0 10px rgba(0,255,136,0.25)'" onblur="this.style.boxShadow='none'" placeholder="doe">
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label class="font-label text-xs uppercase tracking-[0.2em] text-mutedFg mb-2 block">Email *</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-accent font-body text-sm">></span>
+                  <input type="email" required class="w-full bg-card border border-border text-accent font-body text-sm pl-8 pr-4 py-3 cyber-chamfer-sm focus:border-accent focus:outline-none transition-all" style="box-shadow: none;" onfocus="this.style.boxShadow='0 0 5px #00ff88, 0 0 10px rgba(0,255,136,0.25)'" onblur="this.style.boxShadow='none'" placeholder="john@company.com">
+                </div>
+              </div>
+
+              <div>
+                <label class="font-label text-xs uppercase tracking-[0.2em] text-mutedFg mb-2 block">Message</label>
+                <div class="relative">
+                  <span class="absolute left-3 top-4 text-accent font-body text-sm">></span>
+                  <textarea rows="4" class="w-full bg-card border border-border text-accent font-body text-sm pl-8 pr-4 py-3 cyber-chamfer-sm focus:border-accent focus:outline-none transition-all resize-none" style="box-shadow: none;" onfocus="this.style.boxShadow='0 0 5px #00ff88, 0 0 10px rgba(0,255,136,0.25)'" onblur="this.style.boxShadow='none'" placeholder="Tell us about your project..."></textarea>
+                </div>
+              </div>
+
+              <button type="submit" class="w-full font-label text-sm uppercase tracking-[0.2em] bg-accent text-bg py-4 cyber-chamfer-sm font-bold hover:brightness-110 transition-all neon-glow-lg">
+                Transmit Message
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="border-t border-border bg-card/30 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Logo & Tagline -->
+        <div class="md:col-span-2 space-y-4">
+          <div class="border border-accent px-3 py-1 cyber-chamfer-sm inline-block">
+            <span class="font-heading text-accent font-bold text-sm tracking-[0.3em] text-glow">DEFTSQUAD</span>
+          </div>
+          <p class="text-mutedFg text-sm tracking-wide leading-relaxed max-w-sm">
+            Professional IT consulting and services. Building secure, scalable, and innovative solutions for businesses worldwide.
+          </p>
+          <div class="font-label text-xs text-mutedFg uppercase tracking-[0.2em]">
+            Google Cloud Partner
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+          <h4 class="font-heading text-sm font-semibold uppercase tracking-wide text-accent mb-4">Navigation</h4>
+          <ul class="space-y-2">
+            <li><a href="#hero" class="font-body text-sm text-mutedFg hover:text-accent transition-colors"><span class="text-border mr-2">//</span>Home</a></li>
+            <li><a href="#services" class="font-body text-sm text-mutedFg hover:text-accent transition-colors"><span class="text-border mr-2">//</span>Services</a></li>
+            <li><a href="#solutions" class="font-body text-sm text-mutedFg hover:text-accent transition-colors"><span class="text-border mr-2">//</span>Solutions</a></li>
+            <li><a href="#why-us" class="font-body text-sm text-mutedFg hover:text-accent transition-colors"><span class="text-border mr-2">//</span>Why Us</a></li>
+            <li><a href="#contact" class="font-body text-sm text-mutedFg hover:text-accent transition-colors"><span class="text-border mr-2">//</span>Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <h4 class="font-heading text-sm font-semibold uppercase tracking-wide text-accent mb-4">Contact</h4>
+          <div class="space-y-2 font-body text-sm text-mutedFg">
+            <p>5005 W Royal Ln Suite 183k</p>
+            <p>Irving, TX 75063</p>
+            <p class="text-accentTer">+1 469.599.4789</p>
+            <p class="text-accentTer">info@deftsquad.com</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom bar -->
+      <div class="mt-12 pt-6 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-4">
+        <span class="font-label text-xs text-mutedFg uppercase tracking-[0.2em]">
+          &copy; 2024 DeftSquad. All rights reserved.
+        </span>
+        <span class="font-label text-[10px] text-border uppercase tracking-[0.2em]">
+          sys.version // v2.0.0_cyberpunk
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile menu close on link click -->
+  <script>
+    document.querySelectorAll('#mobile-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        document.getElementById('mobile-menu').classList.add('hidden');
+      });
+    });
+  </script>
+
+</body>
+</html>

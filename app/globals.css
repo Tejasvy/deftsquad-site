@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* { box-sizing: border-box; }
+body {
+  background: #FFFFFF;
+  color: #000000;
+  font-family: var(--font-inter), 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* ===== TEXTURE PATTERNS ===== */
+.swiss-noise { position: relative; }
+.swiss-noise::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.swiss-grid-pattern {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.swiss-dots {
+  background-image: radial-gradient(circle, rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.swiss-diagonal {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 4px,
+    rgba(0,0,0,0.02) 4px,
+    rgba(0,0,0,0.02) 5px
+  );
+}
+
+/* ===== NAV LINK SLIDE ANIMATION ===== */
+.nav-slide {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  flex-direction: column;
+  height: 1.2em;
+}
+.nav-slide span {
+  transition: transform 200ms ease-out;
+}
+.nav-slide:hover span:first-child {
+  transform: translateY(-100%);
+}
+.nav-slide:hover span:last-child {
+  transform: translateY(-100%);
+}
+
+/* ===== ROTATING PLUS ICON ===== */
+.plus-rotate {
+  transition: transform 200ms ease-out;
+}
+.group:hover .plus-rotate {
+  transform: rotate(90deg);
+}
+
+/* ===== COLOR INVERSION CARD ===== */
+.invert-card {
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+}
+.invert-card:hover {
+  background-color: #FF3000;
+  color: #FFFFFF;
+}
+.invert-card:hover .card-heading,
+.invert-card:hover .card-text,
+.invert-card:hover .card-label,
+.invert-card:hover .card-icon {
+  color: #FFFFFF;
+}
+.invert-card:hover .card-border-item {
+  border-color: rgba(255,255,255,0.3);
+}
+
+.invert-card-black:hover {
+  background-color: #000000;
+  color: #FFFFFF;
+}
+.invert-card-black:hover .card-heading,
+.invert-card-black:hover .card-text,
+.invert-card-black:hover .card-label,
+.invert-card-black:hover .card-icon {
+  color: #FFFFFF;
+}
+
+/* ===== STAT SCALE ===== */
+.stat-number {
+  transition: transform 200ms ease-out;
+}
+.group:hover .stat-number {
+  transform: scale(1.05);
+}
+
+/* ===== FOCUS VISIBLE ===== */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #FF3000, 0 0 0 4px #FFFFFF;
+}
+
+/* ===== SECTION SCROLL ===== */
+section { scroll-margin-top: 80px; }
+html { scroll-behavior: smooth; }
+
+/* ===== HONEYPOT (hidden from humans) ===== */
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
