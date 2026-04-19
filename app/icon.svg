@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 10800 7200" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-miterlimit:1.5;">
+    <rect x="2930" y="1460" width="4815" height="4815" style="fill:none;stroke:black;stroke-width:83.33px;"/>
+    <g transform="matrix(1.452826,0,0,1.452826,-2339.236387,-371.404102)">
+        <g transform="matrix(917.751606,0,0,917.751606,6869.315919,2777.493807)">
+        </g>
+        <text x="3670.034px" y="2777.494px" style="font-family:'ConthraxSb-Regular', 'Conthrax', sans-serif;font-weight:600;font-size:917.752px;">DEFT</text>
+    </g>
+    <g transform="matrix(1,0,0,1,-410,-237)">
+        <g transform="matrix(1200,0,0,1200,8070.294589,5691.072741)">
+        </g>
+        <text x="3431.095px" y="5691.073px" style="font-family:'MontserratAlternates-ExtraLight', 'Montserrat Alternates';font-weight:275;font-size:1200px;">SQUAD</text>
+    </g>
+</svg>
