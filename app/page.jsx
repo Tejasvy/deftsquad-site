@@ -220,20 +220,34 @@ export default function Page() {
               <p className="card-text text-sm font-normal leading-relaxed text-gray-600">Design and develop a software application in both Apple and Android to fulfill your business needs.</p>
             </div>
 
-            {/* 7. AI Solutions — new */}
-            <div className="gsap-service-card group invert-card md:border-r-2 lg:border-r-0 md:border-b-0 border-swiss-fg p-8 md:p-12 cursor-default">
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-10 h-10 border-2 border-swiss-fg flex items-center justify-center card-border-item">
-                  <svg className="w-5 h-5 card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v2m0 14v2m9-9h-2M5 12H3m14.657-6.657l-1.414 1.414M6.757 17.243l-1.414 1.414m0-12.314l1.414 1.414m10.486 10.486l1.414 1.414" />
-                    <circle cx="12" cy="12" r="4" strokeWidth="2" />
-                  </svg>
+            {/* Wide AI teaser strip — bridges Services into the dark AI Solutions section */}
+            <a
+              href="#ai-solutions"
+              className="gsap-service-card group md:col-span-2 lg:col-span-3 bg-swiss-fg text-white p-8 md:p-12 cursor-pointer transition-colors duration-200 hover:bg-swiss-accent"
+            >
+              <div className="flex items-center justify-between gap-6">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className="font-black text-xs uppercase tracking-widest text-swiss-accent group-hover:text-white transition-colors duration-200">Next 03.</span>
+                    <span className="font-bold text-xs uppercase tracking-widest text-gray-400 group-hover:text-white/80 transition-colors duration-200">Intelligence</span>
+                  </div>
+                  <h3 className="font-black text-3xl md:text-5xl uppercase tracking-tighter leading-[0.95]">
+                    Ship with <span className="text-swiss-accent group-hover:text-white transition-colors duration-200">AI</span>.
+                  </h3>
+                  <p className="text-sm md:text-base font-normal text-gray-400 group-hover:text-white/85 max-w-xl leading-relaxed mt-3 transition-colors duration-200">
+                    Six production-grade capabilities — strategy, LLM copilots, RAG, agents, custom ML, and MLOps. Built for your stack, shipped to your users.
+                  </p>
                 </div>
-                <ArrowIcon />
+                <svg
+                  className="shrink-0 w-12 h-12 md:w-16 md:h-16 -rotate-90 group-hover:translate-y-2 transition-transform duration-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
               </div>
-              <h3 className="card-heading font-black text-xl uppercase tracking-tight mb-3">AI Solutions</h3>
-              <p className="card-text text-sm font-normal leading-relaxed text-gray-600">Design, build, and deploy AI-powered products — from LLM integrations and RAG to intelligent agents tailored to your domain.</p>
-            </div>
+            </a>
           </div>
         </div>
       </section>
