@@ -96,8 +96,10 @@ export default function Page() {
             </div>
 
             <div className="gsap-stat-block group border-r-2 border-swiss-fg p-6 md:p-8 lg:p-12 hover:bg-swiss-fg transition-colors duration-200 cursor-default">
-              <span className="stat-number block font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter group-hover:text-white transition-colors duration-200">24/7</span>
-              <span className="block text-xs font-bold uppercase tracking-widest mt-2 text-gray-500 group-hover:text-gray-400 transition-colors duration-200">Support</span>
+              <span className="stat-number block font-black text-4xl md:text-5xl lg:text-6xl tracking-tighter group-hover:text-white transition-colors duration-200">
+                <span className="gsap-stat" data-target="6" data-suffix="+">6+</span>
+              </span>
+              <span className="block text-xs font-bold uppercase tracking-widest mt-2 text-gray-500 group-hover:text-gray-400 transition-colors duration-200">AI Capabilities</span>
               <div className="plus-rotate mt-4 w-6 h-6 flex items-center justify-center"><PlusIcon /></div>
             </div>
 
