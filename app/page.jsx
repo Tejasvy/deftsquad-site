@@ -241,7 +241,7 @@ export default function Page() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="py-12 md:py-16 border-b-2 border-swiss-fg">
             <div className="grid lg:grid-cols-12 gap-8 items-end">
-              <div className="lg:col-span-5 lg:order-2">
+              <div className="lg:col-span-7 lg:order-2">
                 <div className="flex items-center gap-3 mb-4">
                   <span className="text-swiss-accent font-black text-xs uppercase tracking-widest">02.</span>
                   <span className="font-bold text-xs uppercase tracking-widest">Method</span>
@@ -250,7 +250,7 @@ export default function Page() {
                   IT<br /><span className="text-swiss-accent">Solutions</span>
                 </h2>
               </div>
-              <div className="lg:col-span-7 lg:order-1">
+              <div className="lg:col-span-5 lg:order-1">
                 <p className="text-base font-normal leading-relaxed text-gray-700">
                   Enterprise-grade infrastructure, managed services, and AI capabilities tailored for your needs.
                 </p>
@@ -265,7 +265,12 @@ export default function Page() {
             <SolutionRow num="04" title="Cloud Desktop" body="Securely store data and access your desktop and applications from any device. A cost-effective, secure and reliable way to work from anywhere in the world." />
             <SolutionRow num="05" title="Network Solutions" body="Comprehensive network solutions for businesses of all sizes. Certified professionals design, manage, and implement secure, reliable networks tailored to your needs." />
             <SolutionRow num="06" title="Support Consulting" body="Expert advice and guidance to help businesses maximize their IT investments. Tailored solutions to ensure your business takes full advantage of the latest technology." />
-            <SolutionRow num="07" title="AI Solutions" body="End-to-end AI delivery: LLM integrations and copilots, RAG pipelines for enterprise knowledge, intelligent agents and workflow automation, custom ML model development and fine-tuning, and AI strategy & roadmap consulting — turning the hype into production systems." />
+            <SolutionRow num="07" title="AI Strategy & Roadmap" body="Executive workshops and feasibility audits that identify high-ROI AI use cases, assess data readiness, and produce a 90/180/365-day delivery roadmap — so investment goes to initiatives that move the business, not experiments that stall." />
+            <SolutionRow num="08" title="LLM Integrations & Copilots" body="Production copilots built on Claude, GPT, and Gemini — context-aware assistants that sit inside your CRM, support desk, or internal tools. Prompt engineering, tool-use, streaming UX, and cost/latency tuning included." />
+            <SolutionRow num="09" title="RAG & Knowledge Systems" body="Retrieval-augmented generation over your documents, tickets, wikis, and databases. Vector stores, semantic chunking, hybrid search, and citation-grounded answers — so your AI speaks from your sources, not its training data." />
+            <SolutionRow num="10" title="AI Agents & Workflow Automation" body="Multi-step agents that plan, call tools, and execute workflows: lead qualification, ticket triage, document processing, research, outbound. Human-in-the-loop guardrails by default." />
+            <SolutionRow num="11" title="Custom ML & Fine-Tuning" body="Domain-specific model development — classifiers, forecasters, recommenders, and fine-tuned open-weight LLMs when generic APIs aren't enough. Training pipelines, evaluation suites, and continuous retraining baked in." />
+            <SolutionRow num="12" title="MLOps, Evaluation & Safety" body="The unsexy foundation that makes AI trustworthy in production: automated evals, prompt/version control, observability, red-teaming, PII and prompt-injection defences, and cost guardrails. Ship fast, sleep at night." />
           </div>
         </div>
       </section>
