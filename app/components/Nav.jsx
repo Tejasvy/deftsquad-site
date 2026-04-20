@@ -19,7 +19,13 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
           <a href="#hero" className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-swiss-accent" />
+            <img
+              src="/DeftSquadBlack.png"
+              alt="DeftSquad logo"
+              className="h-9 md:h-10 w-auto"
+              width={40}
+              height={50}
+            />
             <span className="font-black text-base md:text-lg uppercase tracking-tight">
               Deft<span className="text-swiss-accent">Squad</span>
             </span>

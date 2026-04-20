@@ -473,7 +473,13 @@ export default function Page() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border-b border-gray-800">
             <div className="lg:col-span-2 py-12 md:py-16 lg:pr-16 lg:border-r border-gray-800">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-8 h-8 bg-swiss-accent" />
+                <img
+                  src="/DeftSquadWhite.png"
+                  alt="DeftSquad logo"
+                  className="h-10 w-auto"
+                  width={40}
+                  height={50}
+                />
                 <span className="font-black text-lg uppercase tracking-tight">
                   Deft<span className="text-swiss-accent">Squad</span>
                 </span>

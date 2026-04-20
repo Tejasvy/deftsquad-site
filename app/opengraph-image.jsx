@@ -1,11 +1,16 @@
 import { ImageResponse } from "next/og";
 
-export const runtime = "edge";
 export const alt = "DeftSquad — AI Solutions & IT Consulting";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
+  // Fetch the white logo PNG and encode as base64 so Satori can embed it
+  const logoData = await fetch(
+    new URL("../public/DeftSquadWhite.png", import.meta.url)
+  ).then((r) => r.arrayBuffer());
+  const logoSrc = `data:image/png;base64,${Buffer.from(logoData).toString("base64")}`;
+
   return new ImageResponse(
     (
       <div
@@ -23,13 +28,7 @@ export default async function Image() {
       >
         {/* Top row: logo */}
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-          <div
-            style={{
-              width: 56,
-              height: 56,
-              background: "#FF3000",
-            }}
-          />
+          <img src={logoSrc} width={64} height={80} alt="" style={{ display: "block" }} />
           <div
             style={{
               fontSize: 40,
