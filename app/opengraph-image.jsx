@@ -1,15 +1,19 @@
 import { ImageResponse } from "next/og";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 export const alt = "DeftSquad — AI Solutions & IT Consulting";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function Image() {
-  // Fetch the white logo PNG and encode as base64 so Satori can embed it
-  const logoData = await fetch(
-    new URL("../public/DeftSquadWhite.png", import.meta.url)
-  ).then((r) => r.arrayBuffer());
-  const logoSrc = `data:image/png;base64,${Buffer.from(logoData).toString("base64")}`;
+  // Read the white logo PNG from /public at build/request time.
+  // Using fs.readFileSync with process.cwd() avoids webpack URL rewriting
+  // (which breaks `new URL(..., import.meta.url)` during static export).
+  const logoBuffer = readFileSync(
+    join(process.cwd(), "public", "DeftSquadWhite.png")
+  );
+  const logoSrc = `data:image/png;base64,${logoBuffer.toString("base64")}`;
 
   return new ImageResponse(
     (
